@@ -25,6 +25,33 @@ Content-Type: application/json
     "password": "Test1234!"
 }
 ```
+
+#### 마이페이지 조회
+```GET http://localhost:8085/api/users/borrow/mypage?userId=1```
+
+#### 비밀번호 변경
+```
+PUT http://localhost:8085/api/users/borrow/password?userId=1
+Content-Type: application/json
+
+{
+    "currentPassword": "Test1234!",
+    "newPassword": "NewTest1234!",
+    "newPasswordConfirm": "NewTest1234!"
+}
+```
+
+#### 전화번호 변경
+```
+PUT http://localhost:8085/api/users/borrow/phone?userId=1
+Content-Type: application/json
+
+{
+    "phone": "010-9999-8888"
+}
+```
+
+
 ### 투자자 테스트
 #### 회원가입
 ```
@@ -47,6 +74,31 @@ Content-Type: application/json
 {
     "email": "invest@test.com",
     "password": "Test1234!"
+}
+```
+
+#### 마이페이지 조회
+```GET http://localhost:8085/api/users/invest/mypage?userId=1```
+
+#### 비밀번호 변경
+```
+PUT http://localhost:8085/api/users/invest/password?userId=1
+Content-Type: application/json
+
+{
+    "currentPassword": "Test1234!",
+    "newPassword": "NewTest1234!",
+    "newPasswordConfirm": "NewTest1234!"
+}
+```
+
+#### 전화번호 변경
+```
+PUT http://localhost:8085/api/users/invest/phone?userId=1
+Content-Type: application/json
+
+{
+    "phone": "010-9999-8888"
 }
 ```
 ## 2. 계좌(Account) 기능 테스트
