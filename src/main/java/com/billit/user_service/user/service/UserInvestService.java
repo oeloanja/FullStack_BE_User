@@ -5,7 +5,10 @@ import com.billit.user_service.common.exception.ErrorCode;
 import com.billit.user_service.user.domain.entity.UserInvest;
 import com.billit.user_service.user.domain.repository.UserInvestRepository;
 import com.billit.user_service.user.dto.request.LoginRequest;
+import com.billit.user_service.user.dto.request.PasswordUpdateRequest;
+import com.billit.user_service.user.dto.request.PhoneUpdateRequest;
 import com.billit.user_service.user.dto.request.UserInvestRequest;
+import com.billit.user_service.user.dto.response.MyPageResponse;
 import com.billit.user_service.user.dto.response.UserInvestResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +21,7 @@ public class UserInvestService {
 
     private final UserInvestRepository userInvestRepository;
 
+    // 회원가입
     @Transactional
     public UserInvestResponse createUser(UserInvestRequest request) {
         // 비밀번호 일치 여부 확인
@@ -29,18 +33,16 @@ public class UserInvestService {
 
         UserInvest userInvest = UserInvest.builder()
                 .email(request.getEmail())
-                .password(request.getPassword()) // 실제로는 암호화 필요
+                .password(request.getPassword())
                 .userName(request.getUserName())
                 .phone(request.getPhone())
-                .investmentGrade("BASIC") // 초기 등급
                 .build();
 
         UserInvest savedUser = userInvestRepository.save(userInvest);
         return UserInvestResponse.of(savedUser);
     }
 
-    // 로그인 메서드 추가
-    @Transactional(readOnly = true)
+    // 로그인
     public UserInvestResponse login(LoginRequest request) {
         UserInvest user = userInvestRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
@@ -50,5 +52,38 @@ public class UserInvestService {
         }
 
         return UserInvestResponse.of(user);
+    }
+
+    // 마이페이지 조회
+    public MyPageResponse getMyPage(Long userId) {
+        UserInvest user = userInvestRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        return MyPageResponse.of(user);
+    }
+
+    // 비밀번호 변경
+    @Transactional
+    public void updatePassword(Long userId, PasswordUpdateRequest request) {
+        UserInvest user = userInvestRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        if (!user.getPassword().equals(request.getCurrentPassword())) {
+            throw new CustomException(ErrorCode.PASSWORD_NOT_MATCHED);
+        }
+
+        if (!request.getNewPassword().equals(request.getNewPasswordConfirm())) {
+            throw new CustomException(ErrorCode.PASSWORD_NOT_MATCHED);
+        }
+
+        user.updatePassword(request.getNewPassword());
+    }
+
+    // 전화번호 변경
+    @Transactional
+    public void updatePhone(Long userId, PhoneUpdateRequest request) {
+        UserInvest user = userInvestRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        user.updatePhone(request.getPhone());
     }
 }

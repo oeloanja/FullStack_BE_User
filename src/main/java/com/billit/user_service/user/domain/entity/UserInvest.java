@@ -46,4 +46,11 @@ public class UserInvest extends BaseTimeEntity {
     public void updateInvestmentGrade(String investmentGrade) {
         this.investmentGrade = investmentGrade;
     }
+
+    public void updatePassword(String newPassword) {
+        this.password = newPassword;
+    }
+    public void updatePhone(String newPhone) {
+        this.phone = newPhone;
+    }
 }

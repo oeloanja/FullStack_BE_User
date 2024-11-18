@@ -38,16 +38,29 @@ public class UserBorrow extends BaseTimeEntity {
     @Column(name = "credit_rating_date")
     private LocalDate creditRatingDate;
 
+    @Column(name = "borrowment_grade")
+    private String borrowmentGrade;
+
+
     @Builder
     public UserBorrow(String email, String password, String userName, String phone) {
         this.email = email;
         this.password = password;
         this.userName = userName;
         this.phone = phone;
+        this.borrowmentGrade = "BASIC";  // 초기 등급 설정
     }
 
     public void updateCreditRating(Integer creditRating) {
         this.creditRating = creditRating;
         this.creditRatingDate = LocalDate.now();
+    }
+
+    public void updatePassword(String newPassword) {
+        this.password = newPassword;
+    }
+
+    public void updatePhone(String newPhone) {
+        this.phone = newPhone;
     }
 }
