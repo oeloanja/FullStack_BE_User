@@ -9,7 +9,8 @@ spring:
     database: mysql
     database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
+      show-sql: true
     properties:
       hibernate:
         format_sql: true
@@ -33,3 +34,7 @@ logging:
     com.billit.user_service: DEBUG
     org.hibernate.SQL: DEBUG  # SQL 로깅
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE  # SQL 파라미터 로깅
+
+jwt:
+  secret: c3ByaW5nLWJvb3Qtc2VjdXJpdHktand0LXR1dG9yaWFsLWppd29vbi1zcHJpbmctYm9vdC1zZWN1cml0eS1qd3QtdHV0b3JpYWwK
+  token-validity-in-milliseconds: 3600000  # 1시간

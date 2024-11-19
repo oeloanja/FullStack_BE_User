@@ -4,6 +4,7 @@ import com.billit.user_service.user.dto.request.LoginRequest;
 import com.billit.user_service.user.dto.request.PasswordUpdateRequest;
 import com.billit.user_service.user.dto.request.PhoneUpdateRequest;
 import com.billit.user_service.user.dto.request.UserInvestRequest;
+import com.billit.user_service.user.dto.response.LoginResponse;
 import com.billit.user_service.user.dto.response.MyPageResponse;
 import com.billit.user_service.user.dto.response.UserInvestResponse;
 import com.billit.user_service.user.service.UserInvestService;
@@ -19,12 +20,10 @@ public class UserInvestController {
 
     private final UserInvestService userInvestService;
 
-
     @GetMapping
     public ResponseEntity<UserInvestResponse> getUserInfo(@RequestParam Long userId) {
         return ResponseEntity.ok(userInvestService.getUserInfo(userId));
     }
-
 
     // 회원가입
     @PostMapping("/signup")
@@ -33,20 +32,20 @@ public class UserInvestController {
         return ResponseEntity.ok(userInvestService.createUser(request));
     }
 
-    // 로그인
+    // 로그인 - JWT 토큰 응답 추가
     @PostMapping("/login")
-    public ResponseEntity<UserInvestResponse> login(
+    public ResponseEntity<LoginResponse<UserInvestResponse>> login(
             @Valid @RequestBody LoginRequest request) {
         return ResponseEntity.ok(userInvestService.login(request));
     }
 
-    // 마이페이지 조회
+    // 마이페이지 조회 - JWT 토큰으로 인증
     @GetMapping("/mypage")
     public ResponseEntity<MyPageResponse> getMyPage(@RequestParam Long userId) {
         return ResponseEntity.ok(userInvestService.getMyPage(userId));
     }
 
-    // 비밀번호 변경
+    // 비밀번호 변경 - JWT 토큰으로 인증
     @PutMapping("/password")
     public ResponseEntity<Void> updatePassword(
             @RequestParam Long userId,
@@ -55,7 +54,7 @@ public class UserInvestController {
         return ResponseEntity.ok().build();
     }
 
-    // 전화번호 변경
+    // 전화번호 변경 - JWT 토큰으로 인증
     @PutMapping("/phone")
     public ResponseEntity<Void> updatePhone(
             @RequestParam Long userId,
