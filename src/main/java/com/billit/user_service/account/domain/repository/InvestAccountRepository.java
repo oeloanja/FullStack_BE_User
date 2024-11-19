@@ -9,5 +9,6 @@ import java.util.Optional;
 public interface InvestAccountRepository extends JpaRepository<InvestAccount, Long> {
     List<InvestAccount> findAllByUserInvestIdAndIsDeletedFalse(Long userInvestId);
     Optional<InvestAccount> findByIdAndIsDeletedFalse(Long id);
+    Optional<InvestAccount> findByAccountNumberAndIsDeletedFalse(String accountNumber);
     boolean existsByAccountNumberAndIsDeletedFalse(String accountNumber);
 }

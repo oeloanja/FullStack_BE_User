@@ -30,26 +30,18 @@ public class UserInvest extends BaseTimeEntity {
     @Column(nullable = false, length = 20)
     private String phone;
 
-    @Column(name = "investment_grade", nullable = false, length = 10)
-    private String investmentGrade;
-
     @Builder
-    public UserInvest(String email, String password, String userName,
-                      String phone, String investmentGrade) {
+    public UserInvest(String email, String password, String userName, String phone) {
         this.email = email;
         this.password = password;
         this.userName = userName;
         this.phone = phone;
-        this.investmentGrade = investmentGrade;
-    }
-
-    public void updateInvestmentGrade(String investmentGrade) {
-        this.investmentGrade = investmentGrade;
     }
 
     public void updatePassword(String newPassword) {
         this.password = newPassword;
     }
+
     public void updatePhone(String newPhone) {
         this.phone = newPhone;
     }

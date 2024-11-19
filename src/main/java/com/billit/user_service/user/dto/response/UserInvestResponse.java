@@ -27,7 +27,6 @@ public class UserInvestResponse {
                 .email(userInvest.getEmail())
                 .userName(userInvest.getUserName())
                 .phone(userInvest.getPhone())
-                .InvestmentGrade(userInvest.getInvestmentGrade())
                 .createdAt(userInvest.getCreatedAt())
                 .updatedAt(userInvest.getUpdatedAt())
                 .build();

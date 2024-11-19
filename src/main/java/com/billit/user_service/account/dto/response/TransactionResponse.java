@@ -21,9 +21,13 @@ public class TransactionResponse {
     private LocalDateTime transactionDate;
 
     public static TransactionResponse of(Transaction transaction) {
+        String accountNumber = transaction.getBorrowAccount() != null ?
+                transaction.getBorrowAccount().getAccountNumber() :
+                transaction.getInvestAccount().getAccountNumber();
+
         return TransactionResponse.builder()
                 .transactionId(transaction.getTransactionId())
-                .accountNumber(transaction.getBorrowAccount().getAccountNumber())
+                .accountNumber(accountNumber)
                 .amount(transaction.getAmount())
                 .type(transaction.getType())
                 .status(transaction.getStatus())

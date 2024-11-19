@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("users/Invest")
+@RequestMapping("users/invest")
 @RequiredArgsConstructor
 public class UserInvestController {
 
