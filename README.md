@@ -1,5 +1,5 @@
 ## 1.사용자(User) 기능 테스트
-### 대출자 테스트
+### 1. 대출자 테스트
 #### 회원가입
 ```
 POST http://localhost:8085/api/users/borrow/signup
@@ -27,7 +27,14 @@ Content-Type: application/json
 ```
 
 #### 마이페이지 조회
-```GET http://localhost:8085/api/users/borrow/mypage?userId=1```
+```
+GET http://localhost:8085/api/users/borrow/mypage?userId=1
+```
+
+#### 전체정보 조회
+```
+GET http://localhost:8085/api/users/borrow?userId=1
+```
 
 #### 비밀번호 변경
 ```
@@ -52,7 +59,7 @@ Content-Type: application/json
 ```
 
 
-### 투자자 테스트
+### 2. 투자자 테스트
 #### 회원가입
 ```
 POST http://localhost:8085/api/users/invest/signup
@@ -78,7 +85,14 @@ Content-Type: application/json
 ```
 
 #### 마이페이지 조회
-```GET http://localhost:8085/api/users/invest/mypage?userId=1```
+```
+GET http://localhost:8085/api/users/invest/mypage?userId=1
+```
+
+#### 전체정보 조회
+```
+GET http://localhost:8085/api/users/invest?userId=1
+```
 
 #### 비밀번호 변경
 ```
@@ -102,7 +116,7 @@ Content-Type: application/json
 }
 ```
 ## 2. 계좌(Account) 기능 테스트
-### 대출자 계좌
+### 1. 대출자 계좌
 #### 계좌 등록
 ```
 POST http://localhost:8085/api/accounts/borrow?userId=1
@@ -127,7 +141,7 @@ Content-Type: application/json
     "isDeleted": true
 }
 ```
-### 투자자 계좌
+### 2. 투자자 계좌
 #### 계좌 등록
 ```
 POST http://localhost:8085/api/accounts/invest?userId=1
@@ -153,15 +167,94 @@ Content-Type: application/json
 }
 ```
 
+## 3. 거래(Transaction) 기능 테스트
 
+### 1. 대출자 계좌 거래 테스트
 
-테스트 시나리오
+#### 잔액 조회
+```GET http://localhost:8085/api/accounts/transaction/borrow/balance/1?userId=1```
 
+#### 입금
+```
+POST http://localhost:8085/api/accounts/transaction/borrow/deposit?userId=1
+Content-Type: application/json
 
-회원가입 → 로그인 → 계좌등록 → 목록조회 → 상태변경 순으로 테스트
+{
+    "accountNumber": "110-123-456789",
+    "amount": 100000,
+    "description": "급여 입금"
+}
+```
+#### 출금
+```
+POST http://localhost:8085/api/accounts/transaction/borrow/withdraw?userId=1
+Content-Type: application/json
 
+{
+    "accountNumber": "110-123-456789",
+    "amount": 30000,
+    "description": "출금"
+}
+```
+#### 송금
+```
+POST http://localhost:8085/api/accounts/transaction/borrow/transfer?userId=1
+Content-Type: application/json
 
-각 단계별로 응답 코드와 데이터 확인
+{
+    "fromAccountNumber": "110-123-456789",
+    "toAccountNumber": "123-456-789012",
+    "amount": 50000,
+    "description": "송금"
+}
+```
+#### 거래 내역 조회
+```
+GET http://localhost:8085/api/accounts/transaction/borrow/history/1?userId=1
+```
 
+## 2. 투자자 계좌 거래 테스트
+text
+#### 잔액 조회
+```
+GET http://localhost:8085/api/accounts/transaction/invest/balance/1?userId=1
+```
 
-에러 케이스도 테스트 (잘못된 입력, 권한 없는 접근 등)
+#### 입금
+```
+POST http://localhost:8085/api/accounts/transaction/invest/deposit?userId=1
+Content-Type: application/json
+
+{
+    "accountNumber": "123-456-789012",
+    "amount": 100000,
+    "description": "급여 입금"
+}
+```
+#### 출금
+```
+POST http://localhost:8085/api/accounts/transaction/invest/withdraw?userId=1
+Content-Type: application/json
+
+{
+    "accountNumber": "123-456-789012",
+    "amount": 30000,
+    "description": "출금"
+}
+```
+#### 송금
+```
+POST http://localhost:8085/api/accounts/transaction/invest/transfer?userId=1
+Content-Type: application/json
+
+{
+    "fromAccountNumber": "123-456-789012",
+    "toAccountNumber": "110-123-456789",
+    "amount": 50000,
+    "description": "송금"
+}
+```
+#### 거래 내역 조회
+```
+GET http://localhost:8085/api/accounts/transaction/invest/history/1?userId=1
+```
