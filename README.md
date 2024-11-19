@@ -29,6 +29,7 @@ Content-Type: application/json
 #### 마이페이지 조회
 ```
 GET http://localhost:8085/api/users/borrow/mypage?userId=1
+Authorization: Bearer eyJhbG... // 로그인에서 받은 토큰
 ```
 
 #### 전체정보 조회
@@ -87,6 +88,7 @@ Content-Type: application/json
 #### 마이페이지 조회
 ```
 GET http://localhost:8085/api/users/invest/mypage?userId=1
+Authorization: Bearer eyJhbG... // 로그인에서 받은 토큰
 ```
 
 #### 전체정보 조회
