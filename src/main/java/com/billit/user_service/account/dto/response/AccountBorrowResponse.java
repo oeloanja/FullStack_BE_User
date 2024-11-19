@@ -4,6 +4,7 @@ import com.billit.user_service.account.domain.entity.BorrowAccount;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
@@ -13,6 +14,7 @@ public class AccountBorrowResponse {
     private String bankName;
     private String accountNumber;
     private String accountHolder;
+    private BigDecimal balance;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -22,6 +24,7 @@ public class AccountBorrowResponse {
                 .bankName(account.getBankName())
                 .accountNumber(account.getAccountNumber())
                 .accountHolder(account.getAccountHolder())
+                .balance(account.getBalance())
                 .createdAt(account.getCreatedAt())
                 .updatedAt(account.getUpdatedAt())
                 .build();

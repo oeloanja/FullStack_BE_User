@@ -78,6 +78,14 @@ public class UserInvestService {
         user.updatePassword(request.getNewPassword());
     }
 
+    public UserInvestResponse getUserInfo(Long userId) {
+        UserInvest user = userInvestRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        return UserInvestResponse.of(user);
+    }
+
+
+
     // 전화번호 변경
     @Transactional
     public void updatePhone(Long userId, PhoneUpdateRequest request) {

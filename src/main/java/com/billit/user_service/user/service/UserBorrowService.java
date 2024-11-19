@@ -1,5 +1,7 @@
 package com.billit.user_service.user.service;
 
+import com.billit.user_service.account.domain.repository.BorrowAccountRepository;
+import com.billit.user_service.account.dto.response.AccountBorrowResponse;
 import com.billit.user_service.common.exception.CustomException;
 import com.billit.user_service.common.exception.ErrorCode;
 import com.billit.user_service.user.domain.entity.UserBorrow;
@@ -14,12 +16,42 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class UserBorrowService {
 
     private final UserBorrowRepository userBorrowRepository;
+    private final BorrowAccountRepository borrowAccountRepository;
+
+    public UserBorrowResponse getUserInfo(Long userId) {
+        // 사용자 정보 조회
+        UserBorrow user = userBorrowRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        // 해당 사용자의 계좌 정보 조회
+        List<AccountBorrowResponse> accounts = borrowAccountRepository
+                .findAllByUserBorrowIdAndIsDeletedFalse(userId)
+                .stream()
+                .map(AccountBorrowResponse::of)
+                .collect(Collectors.toList());
+
+        return UserBorrowResponse.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .userName(user.getUserName())
+                .password(user.getPassword())
+                .phone(user.getPhone())
+                .creditRating(user.getCreditRating())
+                .borrowmentGrade(user.getBorrowmentGrade())
+                .createdAt(user.getCreatedAt())
+                .updatedAt(user.getUpdatedAt())
+                .accounts(accounts)
+                .build();
+    }
 
     // 회원가입
     @Transactional

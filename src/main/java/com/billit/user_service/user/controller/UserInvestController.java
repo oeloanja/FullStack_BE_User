@@ -13,11 +13,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/users/Invest")
+@RequestMapping("users/Invest")
 @RequiredArgsConstructor
 public class UserInvestController {
 
     private final UserInvestService userInvestService;
+
+
+    @GetMapping
+    public ResponseEntity<UserInvestResponse> getUserInfo(@RequestParam Long userId) {
+        return ResponseEntity.ok(userInvestService.getUserInfo(userId));
+    }
+
 
     // 회원가입
     @PostMapping("/signup")

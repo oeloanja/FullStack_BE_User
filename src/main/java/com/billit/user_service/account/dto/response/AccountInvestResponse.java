@@ -4,6 +4,7 @@ import com.billit.user_service.account.domain.entity.InvestAccount;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
@@ -13,6 +14,7 @@ public class AccountInvestResponse {
     private String bankName;
     private String accountNumber;
     private String accountHolder;
+    private BigDecimal balance;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 

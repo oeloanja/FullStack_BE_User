@@ -13,11 +13,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/users/borrow")
+@RequestMapping("users/borrow")
 @RequiredArgsConstructor
 public class UserBorrowController {
 
     private final UserBorrowService userBorrowService;
+
+    @GetMapping
+    public ResponseEntity<UserBorrowResponse> getUserInfo(@RequestParam Long userId) {
+        return ResponseEntity.ok(userBorrowService.getUserInfo(userId));
+    }
 
     // 회원가입
     @PostMapping("/signup")

@@ -9,5 +9,6 @@ import java.util.Optional;
 public interface BorrowAccountRepository extends JpaRepository<BorrowAccount, Long> {
     List<BorrowAccount> findAllByUserBorrowIdAndIsDeletedFalse(Long userBorrowId);
     Optional<BorrowAccount> findByIdAndIsDeletedFalse(Long id);
+    Optional<BorrowAccount> findByAccountNumberAndIsDeletedFalse(String accountNumber);  // 추가
     boolean existsByAccountNumberAndIsDeletedFalse(String accountNumber);
 }

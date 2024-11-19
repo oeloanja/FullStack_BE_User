@@ -1,11 +1,17 @@
 package com.billit.user_service.account.domain.entity;
 
 import com.billit.user_service.common.config.entity.BaseTimeEntity;
+import com.billit.user_service.common.exception.CustomException;
+import com.billit.user_service.common.exception.ErrorCode;
 import com.billit.user_service.user.domain.entity.UserInvest;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -33,6 +39,12 @@ public class InvestAccount extends BaseTimeEntity {
     @Column(nullable = false)
     private boolean isDeleted = false;
 
+    @Column(nullable = false)
+    private BigDecimal balance = BigDecimal.ZERO;  // 잔액 필드 추가
+
+    @OneToMany(mappedBy = "investAccount", cascade = CascadeType.ALL)
+    private List<Transaction> transactions = new ArrayList<>();
+
     @Builder
     public InvestAccount(String bankName, String accountNumber,
                          String accountHolder, UserInvest userInvest) {
@@ -40,6 +52,18 @@ public class InvestAccount extends BaseTimeEntity {
         this.accountNumber = accountNumber;
         this.accountHolder = accountHolder;
         this.userInvest = userInvest;
+        this.balance = BigDecimal.ZERO;
+    }
+
+    public void deposit(BigDecimal amount) {
+        this.balance = this.balance.add(amount);
+    }
+
+    public void withdraw(BigDecimal amount) {
+        if (this.balance.compareTo(amount) < 0) {
+            throw new CustomException(ErrorCode.INSUFFICIENT_BALANCE);
+        }
+        this.balance = this.balance.subtract(amount);
     }
 
     public void delete() {
