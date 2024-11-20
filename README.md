@@ -2,7 +2,7 @@
 ### 1. 대출자 테스트
 #### 회원가입
 ```
-POST http://localhost:8085/api/users/borrow/signup
+POST http://localhost:8085/api/v1/user_service/users/borrow/signup
 Content-Type: application/json
 
 {
@@ -17,7 +17,7 @@ Content-Type: application/json
 
 #### 로그인
 ```
-POST http://localhost:8085/api/users/borrow/login
+POST http://localhost:8085/api/v1/user_service/users/borrow/login
 Content-Type: application/json
 
 {
@@ -28,18 +28,18 @@ Content-Type: application/json
 
 #### 마이페이지 조회
 ```
-GET http://localhost:8085/api/users/borrow/mypage?userId=1
+GET http://localhost:8085/api/v1/user_service/users/borrow/mypage?userId=1
 Authorization: Bearer eyJhbG... // 로그인에서 받은 토큰
 ```
 
 #### 전체정보 조회
 ```
-GET http://localhost:8085/api/users/borrow?userId=1
+GET http://localhost:8085/api/v1/user_service/users/borrow?userId=1
 ```
 
 #### 비밀번호 변경
 ```
-PUT http://localhost:8085/api/users/borrow/password?userId=1
+PUT http://localhost:8085/api/v1/user_service/users/borrow/password?userId=1
 Content-Type: application/json
 
 {
@@ -51,7 +51,7 @@ Content-Type: application/json
 
 #### 전화번호 변경
 ```
-PUT http://localhost:8085/api/users/borrow/phone?userId=1
+PUT http://localhost:8085/api/v1/user_service/users/borrow/phone?userId=1
 Content-Type: application/json
 
 {
@@ -63,7 +63,7 @@ Content-Type: application/json
 ### 2. 투자자 테스트
 #### 회원가입
 ```
-POST http://localhost:8085/api/users/invest/signup
+POST http://localhost:8085/api/v1/user_service/users/invest/signup
 Content-Type: application/json
 
 {
@@ -76,7 +76,7 @@ Content-Type: application/json
 ```
 #### 로그인
 ```
-POST http://localhost:8085/api/users/invest/login
+POST http://localhost:8085/api/v1/user_service/users/invest/login
 Content-Type: application/json
 
 {
@@ -87,18 +87,18 @@ Content-Type: application/json
 
 #### 마이페이지 조회
 ```
-GET http://localhost:8085/api/users/invest/mypage?userId=1
+GET http://localhost:8085/api/v1/user_service/users/invest/mypage?userId=1
 Authorization: Bearer eyJhbG... // 로그인에서 받은 토큰
 ```
 
 #### 전체정보 조회
 ```
-GET http://localhost:8085/api/users/invest?userId=1
+GET http://localhost:8085/api/v1/user_service/users/invest?userId=1
 ```
 
 #### 비밀번호 변경
 ```
-PUT http://localhost:8085/api/users/invest/password?userId=1
+PUT http://localhost:8085/api/v1/user_service/users/invest/password?userId=1
 Content-Type: application/json
 
 {
@@ -110,7 +110,7 @@ Content-Type: application/json
 
 #### 전화번호 변경
 ```
-PUT http://localhost:8085/api/users/invest/phone?userId=1
+PUT http://localhost:8085/api/v1/user_service/users/invest/phone?userId=1
 Content-Type: application/json
 
 {
@@ -121,7 +121,7 @@ Content-Type: application/json
 ### 1. 대출자 계좌
 #### 계좌 등록
 ```
-POST http://localhost:8085/api/accounts/borrow?userId=1
+POST http://localhost:8085/api/v1/user_service/accounts/borrow?userId=1
 Content-Type: application/json
 
 {
@@ -132,11 +132,11 @@ Content-Type: application/json
 ```
 #### 계좌 목록 조회
 
-```GET http://localhost:8085/api/accounts/borrow?userId=1```
+```GET http://localhost:8085/api/v1/user_service/accounts/borrow?userId=1```
 
 #### 계좌 상태 변경(계좌 삭제)
 ```
-PUT http://localhost:8085/api/accounts/borrow/1/status?userId=1
+PUT http://localhost:8085/api/v1/user_service/accounts/borrow/1/status?userId=1
 Content-Type: application/json
 
 {
@@ -146,7 +146,7 @@ Content-Type: application/json
 ### 2. 투자자 계좌
 #### 계좌 등록
 ```
-POST http://localhost:8085/api/accounts/invest?userId=1
+POST http://localhost:8085/api/v1/user_service/accounts/invest?userId=1
 Content-Type: application/json
 
 {
@@ -157,11 +157,11 @@ Content-Type: application/json
 ```
 #### 계좌 목록 조회
 
-``` GET http://localhost:8085/api/accounts/invest?userId=1 ```
+``` GET http://localhost:8085/api/v1/user_service/accounts/invest?userId=1 ```
 
 #### 계좌 상태 변경
 ```
-PUT http://localhost:8085/api/accounts/invest/1/status?userId=1
+PUT http://localhost:8085/api/v1/user_service/accounts/invest/1/status?userId=1
 Content-Type: application/json
 
 {
@@ -174,11 +174,11 @@ Content-Type: application/json
 ### 1. 대출자 계좌 거래 테스트
 
 #### 잔액 조회
-```GET http://localhost:8085/api/accounts/transaction/borrow/balance/1?userId=1```
+```GET http://localhost:8085/api/v1/user_service/accounts/transaction/borrow/balance/1?userId=1```
 
 #### 입금
 ```
-POST http://localhost:8085/api/accounts/transaction/borrow/deposit?userId=1
+POST http://localhost:8085/api/v1/user_service/accounts/transaction/borrow/deposit?userId=1
 Content-Type: application/json
 
 {
@@ -189,7 +189,7 @@ Content-Type: application/json
 ```
 #### 출금
 ```
-POST http://localhost:8085/api/accounts/transaction/borrow/withdraw?userId=1
+POST http://localhost:8085/api/v1/user_service/accounts/transaction/borrow/withdraw?userId=1
 Content-Type: application/json
 
 {
@@ -200,7 +200,7 @@ Content-Type: application/json
 ```
 #### 송금
 ```
-POST http://localhost:8085/api/accounts/transaction/borrow/transfer?userId=1
+POST http://localhost:8085/api/v1/user_service/accounts/transaction/borrow/transfer?userId=1
 Content-Type: application/json
 
 {
@@ -212,19 +212,19 @@ Content-Type: application/json
 ```
 #### 거래 내역 조회
 ```
-GET http://localhost:8085/api/accounts/transaction/borrow/history/1?userId=1
+GET http://localhost:8085/api/v1/user_service/accounts/transaction/borrow/history/1?userId=1
 ```
 
 ## 2. 투자자 계좌 거래 테스트
 text
 #### 잔액 조회
 ```
-GET http://localhost:8085/api/accounts/transaction/invest/balance/1?userId=1
+GET http://localhost:8085/api/v1/user_service/accounts/transaction/invest/balance/1?userId=1
 ```
 
 #### 입금
 ```
-POST http://localhost:8085/api/accounts/transaction/invest/deposit?userId=1
+POST http://localhost:8085/api/v1/user_service/accounts/transaction/invest/deposit?userId=1
 Content-Type: application/json
 
 {
@@ -235,7 +235,7 @@ Content-Type: application/json
 ```
 #### 출금
 ```
-POST http://localhost:8085/api/accounts/transaction/invest/withdraw?userId=1
+POST http://localhost:8085/api/v1/user_service/accounts/transaction/invest/withdraw?userId=1
 Content-Type: application/json
 
 {
@@ -246,7 +246,7 @@ Content-Type: application/json
 ```
 #### 송금
 ```
-POST http://localhost:8085/api/accounts/transaction/invest/transfer?userId=1
+POST http://localhost:8085/api/v1/user_service/accounts/transaction/invest/transfer?userId=1
 Content-Type: application/json
 
 {
@@ -258,5 +258,5 @@ Content-Type: application/json
 ```
 #### 거래 내역 조회
 ```
-GET http://localhost:8085/api/accounts/transaction/invest/history/1?userId=1
+GET http://localhost:8085/api/v1/user_service/accounts/transaction/invest/history/1?userId=1
 ```
