@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 @Builder
 public class UserBorrowResponse {
-    private Long id;
+    private Long userBorrowId;
     private String email;
     private String password;
     private String userName;
@@ -24,7 +24,7 @@ public class UserBorrowResponse {
 
     public static UserBorrowResponse of(UserBorrow userBorrow) {
         return UserBorrowResponse.builder()
-                .id(userBorrow.getId())
+                .userBorrowId(userBorrow.getId())
                 .email(userBorrow.getEmail())
                 .userName(userBorrow.getUserName())
                 .phone(userBorrow.getPhone())

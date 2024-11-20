@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 @Builder
 public class UserInvestResponse {
-    private Long id;
+    private Long userInvestId;
     private String email;
     private String userName;
     private String phone;
@@ -23,7 +23,7 @@ public class UserInvestResponse {
 
     public static UserInvestResponse of(UserInvest userInvest) {
         return UserInvestResponse.builder()
-                .id(userInvest.getId())
+                .userInvestId(userInvest.getId())
                 .email(userInvest.getEmail())
                 .userName(userInvest.getUserName())
                 .phone(userInvest.getPhone())

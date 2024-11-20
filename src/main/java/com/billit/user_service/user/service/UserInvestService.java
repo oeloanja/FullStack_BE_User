@@ -87,7 +87,7 @@ public class UserInvestService {
                 .collect(Collectors.toList());
 
         return UserInvestResponse.builder()
-                .id(user.getId())
+                .userInvestId(user.getId())
                 .email(user.getEmail())
                 .userName(user.getUserName())
                 .phone(user.getPhone())

@@ -103,7 +103,7 @@ public class UserBorrowService {
                 .collect(Collectors.toList());
 
         return UserBorrowResponse.builder()
-                .id(user.getId())
+                .userBorrowId(user.getId())
                 .email(user.getEmail())
                 .userName(user.getUserName())
                 .phone(user.getPhone())
