@@ -26,6 +26,13 @@ Content-Type: application/json
 }
 ```
 
+#### 새로운 토큰 발급 
+```
+POST /api/v1/user_service/users/borrow/refresh
+Header: Authorization: Bearer {refreshToken}
+```
+
+
 #### 마이페이지 조회
 ```
 GET http://localhost:8085/api/v1/user_service/users/borrow/mypage?userId=1
@@ -59,6 +66,12 @@ Content-Type: application/json
 }
 ```
 
+#### 로그아웃 
+```
+POST http://localhost:8085/api/v1/user_service/users/borrow/logout
+Header:Authorization: Bearer {저장한 리프레시 토큰}
+```
+
 
 ### 2. 투자자 테스트
 #### 회원가입
@@ -84,6 +97,14 @@ Content-Type: application/json
     "password": "Test1234!"
 }
 ```
+
+
+#### 새로운 토큰 발급 
+```
+POST /api/v1/user_service/users/invest/refresh
+Header: Authorization: Bearer {refreshToken}
+```
+
 
 #### 마이페이지 조회
 ```
@@ -117,6 +138,15 @@ Content-Type: application/json
     "phone": "010-9999-8888"
 }
 ```
+
+
+#### 로그아웃 
+```
+POST http://localhost:8085/api/v1/user_service/users/invest/logout
+Header:Authorization: Bearer {저장한 리프레시 토큰}
+```
+
+
 ## 2. 계좌(Account) 기능 테스트
 ### 1. 대출자 계좌
 #### 계좌 등록
