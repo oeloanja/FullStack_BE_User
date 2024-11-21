@@ -8,21 +8,26 @@ import com.billit.user_service.account.domain.repository.BorrowAccountRepository
 import com.billit.user_service.account.domain.repository.InvestAccountRepository;
 import com.billit.user_service.account.domain.repository.TransactionRepository;
 import com.billit.user_service.account.dto.request.DepositRequest;
+import com.billit.user_service.account.dto.request.GroupDepositRequest;
 import com.billit.user_service.account.dto.request.TransferRequest;
 import com.billit.user_service.account.dto.request.WithdrawRequest;
 import com.billit.user_service.account.dto.response.TransactionResponse;
 import com.billit.user_service.common.exception.CustomException;
 import com.billit.user_service.common.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.security.auth.login.AccountNotFoundException;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class TransactionService {
@@ -31,7 +36,7 @@ public class TransactionService {
     private final InvestAccountRepository investAccountRepository;
 
     // 대출자 계좌 잔액 조회
-    public BigDecimal getBorrowBalance(Long userId, Long accountId) {
+    public BigDecimal getBorrowBalance(Long userId, Integer accountId) {
         BorrowAccount account = borrowAccountRepository
                 .findByIdAndIsDeletedFalse(accountId)
                 .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
@@ -40,7 +45,7 @@ public class TransactionService {
     }
 
     // 투자자 계좌 잔액 조회
-    public BigDecimal getInvestBalance(Long userId, Long accountId) {
+    public BigDecimal getInvestBalance(Long userId, Integer accountId) {
         InvestAccount account = investAccountRepository
                 .findByIdAndIsDeletedFalse(accountId)
                 .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
@@ -52,7 +57,7 @@ public class TransactionService {
     @Transactional
     public TransactionResponse depositBorrow(Long userId, DepositRequest request) {
         BorrowAccount account = borrowAccountRepository
-                .findByAccountNumberAndIsDeletedFalse(request.getAccountNumber())
+                .findByIdAndIsDeletedFalse(request.getAccountId())
                 .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
         validateBorrowAccountOwnership(account, userId);
 
@@ -75,11 +80,49 @@ public class TransactionService {
         return TransactionResponse.of(transactionRepository.save(transaction));
     }
 
+    // 그룹단위 입금
+    @Transactional
+    public List<TransactionResponse> depositGroupBorrow(List<GroupDepositRequest> requests) {
+        requests.forEach(request -> {
+            log.info("Processing GroupDepositRequest: {}", request);
+            if (request.getUserBorrowAccountId() == null) {
+                log.error("accountBorrowId is null in request: {}", request);
+            }
+        });
+
+        return requests.stream()
+                .map(request -> {
+                    // 1. 각 대출자의 계좌 조회
+                    BorrowAccount account = borrowAccountRepository.findById(Long.valueOf(request.getUserBorrowAccountId()))
+                            .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
+
+                    // 2. 잔액 업데이트
+                    account.deposit(request.getAmount());
+                    borrowAccountRepository.save(account);
+
+                    // 3. 거래 내역 생성
+                    Transaction transaction = Transaction.builder()
+                            .transactionId(generateTransactionId())
+                            .borrowAccount(account)
+                            .amount(request.getAmount())
+                            .type(TransactionType.DEPOSIT)
+                            .description(request.getDescription())
+                            .build();
+
+                    // 4. 거래 내역 저장
+                    Transaction savedTransaction = transactionRepository.save(transaction);
+
+                    // 5. 응답 생성
+                    return TransactionResponse.of(savedTransaction);
+                })
+                .collect(Collectors.toList());
+    }
+
     // 투자자 계좌 입금
     @Transactional
     public TransactionResponse depositInvest(Long userId, DepositRequest request) {
         InvestAccount account = investAccountRepository
-                .findByAccountNumberAndIsDeletedFalse(request.getAccountNumber())
+                .findByIdAndIsDeletedFalse(request.getAccountId())
                 .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
         validateInvestAccountOwnership(account, userId);
 
@@ -281,7 +324,7 @@ public class TransactionService {
     }
 
     // 대출자 계좌 거래 내역 조회
-    public List<TransactionResponse> getBorrowTransactionHistory(Long userId, Long accountId) {
+    public List<TransactionResponse> getBorrowTransactionHistory(Long userId, Integer accountId) {
         BorrowAccount account = borrowAccountRepository
                 .findByIdAndIsDeletedFalse(accountId)
                 .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
@@ -294,7 +337,7 @@ public class TransactionService {
     }
 
     // 투자자 계좌 거래 내역 조회
-    public List<TransactionResponse> getInvestTransactionHistory(Long userId, Long accountId) {
+    public List<TransactionResponse> getInvestTransactionHistory(Long userId, Integer accountId) {
         InvestAccount account = investAccountRepository
                 .findByIdAndIsDeletedFalse(accountId)
                 .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));

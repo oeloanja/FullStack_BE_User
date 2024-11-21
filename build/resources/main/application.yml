@@ -1,9 +1,13 @@
 spring:
+  application:
+    name: user-service
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/user_service?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
-    username: test
+    url: jdbc:mysql://localhost:3309/user_service?useSSL=false&createDatabaseIfNotExist=true&serverTimezone=UTC&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
+    username: root
     password: 1234
+    hikari:
+      read-only: false
 
   jpa:
     database: mysql
@@ -15,14 +19,23 @@ spring:
       hibernate:
         format_sql: true
         show_sql: true
-    defer-datasource-initialization: true
-    open-in-view: false  # OSIV 설정 추가
+        connection:
+          read_only: false
+    open-in-view: false
+
 
 server:
   port: 8085
   servlet:
-    context-path: /api
+    context-path: /api/v1/user_service
 
+eureka:
+  client:
+    #enabled: false
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    prefer-ip-address: true
 
 logging:
   file:
@@ -32,9 +45,9 @@ logging:
   level:
     root: INFO
     com.billit.user_service: DEBUG
-    org.hibernate.SQL: DEBUG  # SQL 로깅
-    org.hibernate.type.descriptor.sql.BasicBinder: TRACE  # SQL 파라미터 로깅
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 
 jwt:
   secret: c3ByaW5nLWJvb3Qtc2VjdXJpdHktand0LXR1dG9yaWFsLWppd29vbi1zcHJpbmctYm9vdC1zZWN1cml0eS1qd3QtdHV0b3JpYWwK
-  token-validity-in-milliseconds: 3600000  # 1시간
+  token-validity-in-milliseconds: 3600000

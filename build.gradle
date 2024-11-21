@@ -49,8 +49,16 @@ dependencies {
 
 	// Jakarta Servlet (Spring Boot 3.x용)
 	implementation 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+
+	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:2022.0.3"
+	}
 }

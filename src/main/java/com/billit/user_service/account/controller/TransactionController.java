@@ -1,6 +1,7 @@
 package com.billit.user_service.account.controller;
 
 import com.billit.user_service.account.dto.request.DepositRequest;
+import com.billit.user_service.account.dto.request.GroupDepositRequest;
 import com.billit.user_service.account.dto.request.TransferRequest;
 import com.billit.user_service.account.dto.request.WithdrawRequest;
 import com.billit.user_service.account.dto.response.TransactionResponse;
@@ -23,7 +24,7 @@ public class TransactionController {
     @GetMapping("/borrow/balance/{accountId}")
     public ResponseEntity<BigDecimal> getBorrowBalance(
             @RequestParam Long userId,
-            @PathVariable Long accountId) {
+            @PathVariable Integer accountId) {
         return ResponseEntity.ok(transactionService.getBorrowBalance(userId, accountId));
     }
 
@@ -31,7 +32,7 @@ public class TransactionController {
     @GetMapping("/invest/balance/{accountId}")
     public ResponseEntity<BigDecimal> getInvestBalance(
             @RequestParam Long userId,
-            @PathVariable Long accountId) {
+            @PathVariable Integer accountId) {
         return ResponseEntity.ok(transactionService.getInvestBalance(userId, accountId));
     }
 
@@ -41,6 +42,13 @@ public class TransactionController {
             @RequestParam Long userId,
             @Valid @RequestBody DepositRequest request) {
         return ResponseEntity.ok(transactionService.depositBorrow(userId, request));
+    }
+
+    // 그룹 단위의 입금
+    @PostMapping("/group/borrow/deposit")
+    public ResponseEntity<List<TransactionResponse>> depositGroupBorrow(
+            @Valid @RequestBody List<GroupDepositRequest> requests) {
+        return ResponseEntity.ok(transactionService.depositGroupBorrow(requests));
     }
 
     // 투자자 계좌 입금
@@ -87,7 +95,7 @@ public class TransactionController {
     @GetMapping("/borrow/history/{accountId}")
     public ResponseEntity<List<TransactionResponse>> getBorrowTransactionHistory(
             @RequestParam Long userId,
-            @PathVariable Long accountId) {
+            @PathVariable Integer accountId) {
         return ResponseEntity.ok(transactionService.getBorrowTransactionHistory(userId, accountId));
     }
 
@@ -95,7 +103,7 @@ public class TransactionController {
     @GetMapping("/invest/history/{accountId}")
     public ResponseEntity<List<TransactionResponse>> getInvestTransactionHistory(
             @RequestParam Long userId,
-            @PathVariable Long accountId) {
+            @PathVariable Integer accountId) {
         return ResponseEntity.ok(transactionService.getInvestTransactionHistory(userId, accountId));
     }
 }

@@ -37,7 +37,7 @@ public class AccountBorrowController {
     @PutMapping("/{accountId}/status")
     public ResponseEntity<Void> updateAccountStatus(
             @RequestParam Long userId,
-            @PathVariable Long accountId,
+            @PathVariable Integer accountId,
             @RequestBody AccountStatusRequest request) {    // request 매개변수 추가
         accountBorrowService.deleteAccount(userId, accountId);
         return ResponseEntity.ok().build();

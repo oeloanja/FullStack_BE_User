@@ -1,5 +1,6 @@
 package com.billit.user_service.security.config;
 
+import com.billit.user_service.security.filter.ServiceAuthenticationFilter;
 import com.billit.user_service.security.jwt.JwtAuthenticationFilter;
 import com.billit.user_service.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,9 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        ServiceAuthenticationFilter serviceAuthenticationFilter = new ServiceAuthenticationFilter();
+        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(jwtTokenProvider);
+
         http
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session ->
@@ -41,8 +45,8 @@ public class SecurityConfig {
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
-                        UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(serviceAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
