@@ -1,6 +1,5 @@
 package com.billit.user_service.user.service;
 
-import com.billit.user_service.account.domain.repository.BorrowAccountRepository;
 import com.billit.user_service.account.domain.repository.InvestAccountRepository;
 import com.billit.user_service.account.dto.response.AccountInvestResponse;
 import com.billit.user_service.common.exception.CustomException;
@@ -54,6 +53,7 @@ public class UserInvestService {
     }
 
     // 로그인
+    @Transactional
     public LoginResponse<UserInvestResponse> login(LoginRequest request) {
         UserInvest user = userInvestRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
@@ -62,9 +62,27 @@ public class UserInvestService {
             throw new CustomException(ErrorCode.INVALID_PASSWORD);
         }
 
-        String token = jwtTokenProvider.createToken(user.getEmail(), "ROLE_INVESTOR");
+        String accessToken = jwtTokenProvider.createAccessToken(user.getEmail(), "ROLE_INVESTOR");
+        String refreshToken = jwtTokenProvider.createRefreshToken(user.getEmail());
 
-        return LoginResponse.of(token, UserInvestResponse.of(user));
+        return LoginResponse.of(accessToken, refreshToken, UserInvestResponse.of(user));
+    }
+
+    // 토큰 갱신
+    public LoginResponse<UserInvestResponse> refreshToken(String refreshToken) {
+        // 리프레시 토큰 검증
+        if (!jwtTokenProvider.validateRefreshToken(refreshToken)) {
+            throw new CustomException(ErrorCode.INVALID_REFRESH_TOKEN);
+        }
+
+        // 새 액세스 토큰 발급
+        String userEmail = jwtTokenProvider.getUserEmail(refreshToken);
+        UserInvest user = userInvestRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        String newAccessToken = jwtTokenProvider.createAccessToken(userEmail, "ROLE_INVESTOR");
+
+        return LoginResponse.of(newAccessToken, refreshToken, UserInvestResponse.of(user));
     }
 
     // 마이페이지 조회
@@ -121,5 +139,16 @@ public class UserInvestService {
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         user.updatePhone(request.getPhone());
+    }
+
+    @Transactional
+    public void logout(String refreshToken) {
+        // 리프레시 토큰 검증
+        if (!jwtTokenProvider.validateRefreshToken(refreshToken)) {
+            throw new CustomException(ErrorCode.INVALID_REFRESH_TOKEN);
+        }
+
+        // 리프레시 토큰 폐기 (revoke)
+        jwtTokenProvider.revokeRefreshToken(refreshToken);
     }
 }

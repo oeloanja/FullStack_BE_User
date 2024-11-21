@@ -6,6 +6,7 @@ import com.billit.user_service.user.dto.request.PhoneUpdateRequest;
 import com.billit.user_service.user.dto.request.UserInvestRequest;
 import com.billit.user_service.user.dto.response.LoginResponse;
 import com.billit.user_service.user.dto.response.MyPageResponse;
+import com.billit.user_service.user.dto.response.UserBorrowResponse;
 import com.billit.user_service.user.dto.response.UserInvestResponse;
 import com.billit.user_service.user.service.UserInvestService;
 import jakarta.validation.Valid;
@@ -39,6 +40,15 @@ public class UserInvestController {
         return ResponseEntity.ok(userInvestService.login(request));
     }
 
+    @PostMapping("/refresh")
+    public ResponseEntity<LoginResponse<UserInvestResponse>> refresh(
+            @RequestHeader("Authorization") String refreshToken) {
+        // Bearer 제거
+        String token = refreshToken.substring(7);
+        return ResponseEntity.ok(userInvestService.refreshToken(token));
+    }
+
+
     // 마이페이지 조회 - JWT 토큰으로 인증
     @GetMapping("/mypage")
     public ResponseEntity<MyPageResponse> getMyPage(@RequestParam Long userId) {
@@ -60,6 +70,14 @@ public class UserInvestController {
             @RequestParam Long userId,
             @Valid @RequestBody PhoneUpdateRequest request) {
         userInvestService.updatePhone(userId, request);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(@RequestHeader("Authorization") String refreshToken) {
+        // Bearer 제거
+        String token = refreshToken.substring(7);
+        userInvestService.logout(token);  // borrow 또는 invest service
         return ResponseEntity.ok().build();
     }
 }

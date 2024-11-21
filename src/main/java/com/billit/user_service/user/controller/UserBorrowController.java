@@ -39,6 +39,15 @@ public class UserBorrowController {
         return ResponseEntity.ok(userBorrowService.login(request));
     }
 
+    @PostMapping("/refresh")
+    public ResponseEntity<LoginResponse<UserBorrowResponse>> refresh(
+            @RequestHeader("Authorization") String refreshToken) {
+        // Bearer 제거
+        String token = refreshToken.substring(7);
+        return ResponseEntity.ok(userBorrowService.refreshToken(token));
+    }
+
+
     // 마이페이지 조회 - JWT 토큰으로 인증
     @GetMapping("/mypage")
     public ResponseEntity<MyPageResponse> getMyPage(@RequestParam Long userId) {
@@ -60,6 +69,14 @@ public class UserBorrowController {
             @RequestParam Long userId,
             @Valid @RequestBody PhoneUpdateRequest request) {
         userBorrowService.updatePhone(userId, request);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(@RequestHeader("Authorization") String refreshToken) {
+        // Bearer 제거
+        String token = refreshToken.substring(7);
+        userBorrowService.logout(token);  // borrow 또는 invest service
         return ResponseEntity.ok().build();
     }
 }

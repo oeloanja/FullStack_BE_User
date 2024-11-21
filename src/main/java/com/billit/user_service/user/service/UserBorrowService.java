@@ -15,9 +15,12 @@ import com.billit.user_service.user.dto.response.LoginResponse;
 import com.billit.user_service.user.dto.response.MyPageResponse;
 import com.billit.user_service.user.dto.response.UserBorrowResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -53,6 +56,7 @@ public class UserBorrowService {
     }
 
     // 로그인 - JWT 토큰 발급 추가
+    @Transactional(readOnly = false)
     public LoginResponse<UserBorrowResponse> login(LoginRequest request) {
         UserBorrow user = userBorrowRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
@@ -61,9 +65,27 @@ public class UserBorrowService {
             throw new CustomException(ErrorCode.INVALID_PASSWORD);
         }
 
-        String token = jwtTokenProvider.createToken(user.getEmail(), "ROLE_BORROWER");
+        String accessToken = jwtTokenProvider.createAccessToken(user.getEmail(), "ROLE_BORROWER");
+        String refreshToken = jwtTokenProvider.createRefreshToken(user.getEmail());
 
-        return LoginResponse.of(token, UserBorrowResponse.of(user));
+        return LoginResponse.of(accessToken, refreshToken, UserBorrowResponse.of(user));
+    }
+
+    // 토큰 갱신
+    public LoginResponse<UserBorrowResponse> refreshToken(String refreshToken) {
+        // 리프레시 토큰 검증
+        if (!jwtTokenProvider.validateRefreshToken(refreshToken)) {
+            throw new CustomException(ErrorCode.INVALID_REFRESH_TOKEN);
+        }
+
+        // 새 액세스 토큰 발급
+        String userEmail = jwtTokenProvider.getUserEmail(refreshToken);
+        UserBorrow user = userBorrowRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        String newAccessToken = jwtTokenProvider.createAccessToken(userEmail, "ROLE_BORROWER");
+
+        return LoginResponse.of(newAccessToken, refreshToken, UserBorrowResponse.of(user));
     }
 
     // 마이페이지 조회
@@ -122,5 +144,16 @@ public class UserBorrowService {
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         user.updatePhone(request.getPhone());
+    }
+
+    @Transactional
+    public void logout(String refreshToken) {
+        // 리프레시 토큰 검증
+        if (!jwtTokenProvider.validateRefreshToken(refreshToken)) {
+            throw new CustomException(ErrorCode.INVALID_REFRESH_TOKEN);
+        }
+
+        // 리프레시 토큰 폐기 (revoke)
+        jwtTokenProvider.revokeRefreshToken(refreshToken);
     }
 }

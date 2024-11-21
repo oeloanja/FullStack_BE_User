@@ -56,7 +56,14 @@ public enum ErrorCode {
     // Balance 관련
     BALANCE_NOT_FOUND(HttpStatus.NOT_FOUND, "BL001", "잔액 정보를 찾을 수 없습니다."),
     BALANCE_UPDATE_FAILED(HttpStatus.BAD_REQUEST, "BL002", "잔액 업데이트에 실패했습니다."),
-    NEGATIVE_BALANCE_NOT_ALLOWED(HttpStatus.BAD_REQUEST, "BL003", "잔액이 음수가 될 수 없습니다.");
+    NEGATIVE_BALANCE_NOT_ALLOWED(HttpStatus.BAD_REQUEST, "BL003", "잔액이 음수가 될 수 없습니다."),
+
+    // 리프레시 토큰 관련
+    INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "RT001", "유효하지 않은 리프레시 토큰입니다."),
+    REFRESH_TOKEN_NOT_FOUND(HttpStatus.NOT_FOUND, "RT002", "리프레시 토큰을 찾을 수 없습니다."),
+    REFRESH_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "RT003", "만료된 리프레시 토큰입니다."),
+    REFRESH_TOKEN_REVOKED(HttpStatus.UNAUTHORIZED, "RT004", "폐기된 리프레시 토큰입니다."),
+    REFRESH_TOKEN_SAVE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "RT005", "리프레시 토큰 저장에 실패했습니다.");
 
     private final HttpStatus status;
     private final String code;

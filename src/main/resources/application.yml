@@ -4,29 +4,34 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/user_service?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
-    username: test
+    username: root
     password: 1234
+    hikari:
+      read-only: false
 
   jpa:
     database: mysql
     database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
       show-sql: true
     properties:
       hibernate:
         format_sql: true
         show_sql: true
-    defer-datasource-initialization: true
+        connection:
+          read_only: false
     open-in-view: false
+
 
 server:
   port: 8085
   servlet:
-    context-path: /api
+    context-path: /api/v1/user_service
 
 eureka:
   client:
+    enabled: false
     service-url:
       defaultZone: http://192.168.10.18:8761/eureka
   instance:

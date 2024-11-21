@@ -6,12 +6,14 @@ import lombok.Getter;
 @Getter
 @Builder
 public class LoginResponse<T> {
-    private String token;
+    private String accessToken;
+    private String refreshToken;
     private T user;
 
-    public static <T> LoginResponse<T> of(String token, T user) {
+    public static <T> LoginResponse<T> of(String accessToken, String refreshToken, T user) {
         return LoginResponse.<T>builder()
-                .token(token)
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
                 .user(user)
                 .build();
     }
