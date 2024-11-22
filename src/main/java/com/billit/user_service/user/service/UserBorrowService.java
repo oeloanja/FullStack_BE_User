@@ -7,12 +7,10 @@ import com.billit.user_service.common.exception.ErrorCode;
 import com.billit.user_service.security.jwt.JwtTokenProvider;
 import com.billit.user_service.user.domain.entity.UserBorrow;
 import com.billit.user_service.user.domain.repository.UserBorrowRepository;
-import com.billit.user_service.user.dto.request.LoginRequest;
-import com.billit.user_service.user.dto.request.PasswordUpdateRequest;
-import com.billit.user_service.user.dto.request.PhoneUpdateRequest;
-import com.billit.user_service.user.dto.request.UserBorrowRequest;
+import com.billit.user_service.user.dto.request.*;
 import com.billit.user_service.user.dto.response.LoginResponse;
 import com.billit.user_service.user.dto.response.MyPageResponse;
+import com.billit.user_service.user.dto.response.PasswordVerificationResponse;
 import com.billit.user_service.user.dto.response.UserBorrowResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -88,16 +87,43 @@ public class UserBorrowService {
         return LoginResponse.of(newAccessToken, refreshToken, UserBorrowResponse.of(user));
     }
 
+    // 비밀번호 검증
+    public PasswordVerificationResponse verifyPassword(Long userId, PasswordVerificationRequest request) {
+        UserBorrow user = userBorrowRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new CustomException(ErrorCode.INVALID_PASSWORD);
+        }
+
+        String verificationToken = jwtTokenProvider.createVerificationToken(user.getEmail());
+        return PasswordVerificationResponse.builder()
+                .verificationToken(verificationToken)
+                .expiryTime(LocalDateTime.now().plusMinutes(30))
+                .build();
+    }
+
+    // 토큰 검증 유틸리티 메서드
+    private void validateVerificationToken(String token) {
+        if (token == null || !jwtTokenProvider.validateVerificationToken(token)) {
+            throw new CustomException(ErrorCode.UNAUTHORIZED_ACCESS);
+        }
+    }
+
+
     // 마이페이지 조회
-    public MyPageResponse getMyPage(Long userId) {
+    public MyPageResponse getMyPage(Long userId, String verificationToken) {
+        validateVerificationToken(verificationToken);
         UserBorrow user = userBorrowRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
         return MyPageResponse.of(user);
     }
 
+
     // 비밀번호 변경 - 암호화된 비밀번호 비교
     @Transactional
-    public void updatePassword(Long userId, PasswordUpdateRequest request) {
+    public void updatePassword(Long userId, PasswordUpdateRequest request, String verificationToken) {
+        validateVerificationToken(verificationToken);
         UserBorrow user = userBorrowRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
@@ -111,6 +137,7 @@ public class UserBorrowService {
 
         user.updatePassword(passwordEncoder.encode(request.getNewPassword()));
     }
+
 
     // 사용자 정보 조회
     public UserBorrowResponse getUserInfo(Long userId) {
@@ -139,7 +166,8 @@ public class UserBorrowService {
 
     // 전화번호 변경
     @Transactional
-    public void updatePhone(Long userId, PhoneUpdateRequest request) {
+    public void updatePhone(Long userId, PhoneUpdateRequest request, String verificationToken) {
+        validateVerificationToken(verificationToken);
         UserBorrow user = userBorrowRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
