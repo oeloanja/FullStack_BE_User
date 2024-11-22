@@ -22,11 +22,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        // 디버깅을 위한 로그 추가
-        System.out.println("Request URI: " + request.getRequestURI());
-        System.out.println("Request Method: " + request.getMethod());
-        System.out.println("Is Refresh Token Request: " + isRefreshTokenRequest(request));
-
         String token = resolveToken(request);
 
         try {

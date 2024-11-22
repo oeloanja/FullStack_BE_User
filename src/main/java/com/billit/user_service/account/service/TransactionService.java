@@ -149,7 +149,7 @@ public class TransactionService {
     @Transactional
     public TransactionResponse withdrawBorrow(Long userId, WithdrawRequest request) {
         BorrowAccount account = borrowAccountRepository
-                .findByAccountNumberAndIsDeletedFalse(request.getAccountNumber())
+                .findByIdAndIsDeletedFalse(request.getAccountId())
                 .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
         validateBorrowAccountOwnership(account, userId);
 
@@ -176,7 +176,7 @@ public class TransactionService {
     @Transactional
     public TransactionResponse withdrawInvest(Long userId, WithdrawRequest request) {
         InvestAccount account = investAccountRepository
-                .findByAccountNumberAndIsDeletedFalse(request.getAccountNumber())
+                .findByIdAndIsDeletedFalse(request.getAccountId())
                 .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
         validateInvestAccountOwnership(account, userId);
 

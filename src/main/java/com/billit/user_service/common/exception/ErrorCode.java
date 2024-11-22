@@ -30,8 +30,6 @@ public enum ErrorCode {
     ACCOUNT_VERIFICATION_FAILED(HttpStatus.BAD_REQUEST, "A005", "계좌 인증에 실패했습니다."),
     ACCOUNT_USER_MISMATCH(HttpStatus.FORBIDDEN, "A006", "해당 계좌에 대한 권한이 없습니다."),
 
-
-
     // Borrow 관련
     BORROW_NOT_FOUND(HttpStatus.NOT_FOUND, "B001", "대출 정보를 찾을 수 없습니다."),
     BORROW_LIMIT_EXCEEDED(HttpStatus.BAD_REQUEST, "B002", "대출 한도를 초과했습니다."),

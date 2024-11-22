@@ -1086,7 +1086,7 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
     </schema>
     <schema id="293" parent="1" name="user_service">
       <Current>1</Current>
-      <LastIntrospectionLocalTimestamp>2024-11-21.01:52:43</LastIntrospectionLocalTimestamp>
+      <LastIntrospectionLocalTimestamp>2024-11-22.05:54:49</LastIntrospectionLocalTimestamp>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </schema>
     <user id="294" parent="1" name="mysql.infoschema">
@@ -1150,7 +1150,7 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <StoredType>datetime(6)|0s</StoredType>
     </column>
     <column id="308" parent="299" name="id">
-      <AutoIncrement>1</AutoIncrement>
+      <AutoIncrement>4</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>bigint|0s</StoredType>
@@ -1270,7 +1270,7 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <StoredType>datetime(6)|0s</StoredType>
     </column>
     <column id="333" parent="301" name="id">
-      <AutoIncrement>1</AutoIncrement>
+      <AutoIncrement>10</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>bigint|0s</StoredType>
@@ -1317,7 +1317,7 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <StoredType>datetime(6)|0s</StoredType>
     </column>
     <column id="343" parent="302" name="id">
-      <AutoIncrement>1</AutoIncrement>
+      <AutoIncrement>30</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>bigint|0s</StoredType>
@@ -1394,7 +1394,7 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <StoredType>datetime(6)|0s</StoredType>
     </column>
     <column id="360" parent="303" name="user_borrow_id">
-      <AutoIncrement>1</AutoIncrement>
+      <AutoIncrement>5</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StoredType>bigint|0s</StoredType>

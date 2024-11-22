@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class WithdrawRequest {
     @NotNull(message = "계좌번호는 필수입니다")
-    private String accountNumber;
+    private Integer accountId;
 
     @NotNull(message = "출금액은 필수입니다")
     @Positive(message = "출금액은 양수여야 합니다")

@@ -30,7 +30,6 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         ServiceAuthenticationFilter serviceAuthenticationFilter = new ServiceAuthenticationFilter();
         JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(jwtTokenProvider);
-
         http
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session ->
