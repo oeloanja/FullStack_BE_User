@@ -1,40 +1,448 @@
-2024-11-23 12:58:14.432 [main] INFO  c.b.u.UserServiceApplication - Starting UserServiceApplication using Java 17.0.12 with PID 22864 (C:\Users\user\Documents\GitHub\FullStack_BE_User\build\classes\java\main started by user in C:\Users\user\Documents\GitHub\FullStack_BE_User)
-2024-11-23 12:58:14.437 [main] DEBUG c.b.u.UserServiceApplication - Running with Spring Boot v3.1.5, Spring v6.0.13
-2024-11-23 12:58:14.439 [main] INFO  c.b.u.UserServiceApplication - No active profile set, falling back to 1 default profile: "default"
-2024-11-23 12:58:15.471 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2024-11-23 12:58:15.642 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 165 ms. Found 6 JPA repository interfaces.
-2024-11-23 12:58:15.918 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=3e8fc2cd-e8af-3553-bbca-5a611cc73ab7
-2024-11-23 12:58:16.620 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8085 (http)
-2024-11-23 12:58:16.636 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
-2024-11-23 12:58:16.637 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.15]
-2024-11-23 12:58:16.854 [main] INFO  o.a.c.c.C.[.[.[/api/v1/user_service] - Initializing Spring embedded WebApplicationContext
-2024-11-23 12:58:16.855 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2348 ms
-2024-11-23 12:58:17.177 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
-2024-11-23 12:58:17.317 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.13.Final
-2024-11-23 12:58:17.321 [main] INFO  org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
-2024-11-23 12:58:17.630 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
-2024-11-23 12:58:17.656 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
-2024-11-23 12:58:17.799 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@73dbe25
-2024-11-23 12:58:17.801 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
-2024-11-23 12:58:17.839 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2024-11-23 12:58:17.840 [main] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
-2024-11-23 12:58:18.762 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2024-11-23 12:58:18.850 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
-2024-11-23 12:58:19.662 [main] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+2024-11-23 14:38:41.094 [http-nio-8085-exec-2] DEBUG org.hibernate.SQL - 
+    select
+        u1_0.user_investor_id,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.updated_at,
+        u1_0.user_name 
+    from
+        user_invest u1_0 
+    where
+        u1_0.email=?
+2024-11-23 14:38:41.159 [http-nio-8085-exec-2] INFO  c.b.u.common.service.EmailService - Attempting to send email to: allgreenms@gmail.com
+2024-11-23 14:38:43.934 [http-nio-8085-exec-2] ERROR c.b.u.common.service.EmailService - Failed to send email
+org.springframework.mail.MailSendException: Failed messages: com.sun.mail.smtp.SMTPSendFailedException: 555-5.5.2 Syntax error, cannot decode response. For more information, go to
+555-5.5.2  https://support.google.com/a/answer/3221692 and review RFC 5321
+555 5.5.2 specifications. d2e1a72fcca58-724de532db3sm2548616b3a.93 - gsmtp
 
-Using generated security password: cd49212c-71fd-478c-9042-20cca58b5720
+	at org.springframework.mail.javamail.JavaMailSenderImpl.doSend(JavaMailSenderImpl.java:491)
+	at org.springframework.mail.javamail.JavaMailSenderImpl.send(JavaMailSenderImpl.java:361)
+	at org.springframework.mail.javamail.JavaMailSenderImpl.send(JavaMailSenderImpl.java:356)
+	at com.billit.user_service.common.service.EmailService.sendPasswordResetEmail(EmailService.java:122)
+	at com.billit.user_service.user.service.UserInvestService.findPassword(UserInvestService.java:205)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:343)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:751)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:123)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:391)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:751)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:703)
+	at com.billit.user_service.user.service.UserInvestService$$SpringCGLIB$$0.findPassword(<generated>)
+	at com.billit.user_service.user.controller.UserInvestController.findPassword(UserInvestController.java:102)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:205)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:150)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:884)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:797)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1081)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:974)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1011)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:547)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:614)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:365)
+	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:100)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:126)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:120)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:131)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:85)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at com.billit.user_service.security.jwt.JwtAuthenticationFilter.doFilterInternal(JwtAuthenticationFilter.java:54)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:352)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:268)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:340)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2024-11-23 14:38:43.938 [http-nio-8085-exec-2] ERROR c.b.u.c.e.GlobalExceptionHandler - =============== CustomException ===============
+DateTime: 2024-11-23T14:38:43.938077700
+Request: uri=/api/v1/user_service/users/invest/find-password
+Code: E001
+Message: 이메일 발송에 실패했습니다.
+Position: com.billit.user_service.common.service.EmailService.sendPasswordResetEmail(EmailService.java:127)
+=============================================
+2024-11-23 14:41:02.563 [main] INFO  c.b.u.UserServiceApplication - Starting UserServiceApplication using Java 17.0.13 with PID 32408 (C:\Users\KMS\Documents\GitHub\FullStack_BE_User\build\classes\java\main started by 김민석 in C:\Users\KMS\Documents\GitHub\FullStack_BE_User)
+2024-11-23 14:41:02.565 [main] DEBUG c.b.u.UserServiceApplication - Running with Spring Boot v3.1.5, Spring v6.0.13
+2024-11-23 14:41:02.566 [main] INFO  c.b.u.UserServiceApplication - No active profile set, falling back to 1 default profile: "default"
+2024-11-23 14:41:03.428 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-11-23 14:41:03.618 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 181 ms. Found 6 JPA repository interfaces.
+2024-11-23 14:41:03.890 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=3e8fc2cd-e8af-3553-bbca-5a611cc73ab7
+2024-11-23 14:41:04.426 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8085 (http)
+2024-11-23 14:41:04.435 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-11-23 14:41:04.435 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.15]
+2024-11-23 14:41:04.559 [main] INFO  o.a.c.c.C.[.[.[/api/v1/user_service] - Initializing Spring embedded WebApplicationContext
+2024-11-23 14:41:04.559 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1949 ms
+2024-11-23 14:41:04.764 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-11-23 14:41:04.848 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.13.Final
+2024-11-23 14:41:04.851 [main] INFO  org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+2024-11-23 14:41:05.178 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-11-23 14:41:05.208 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-11-23 14:41:05.364 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@2c1a8529
+2024-11-23 14:41:05.366 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-11-23 14:41:05.403 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2024-11-23 14:41:05.404 [main] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2024-11-23 14:41:06.405 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-11-23 14:41:06.478 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-11-23 14:41:07.279 [main] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: 7d0ac0e0-9fdd-425e-a10a-37cabcc16c83
 
 This generated password is for development use only. Your security configuration must be updated before running your application in production.
 
-2024-11-23 12:58:20.075 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@5702232d, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@5cbf9aee, org.springframework.security.web.context.SecurityContextHolderFilter@3bd5dff5, org.springframework.security.web.header.HeaderWriterFilter@6f4e39b3, org.springframework.security.web.authentication.logout.LogoutFilter@52d68eb9, com.billit.user_service.security.jwt.JwtAuthenticationFilter@35920655, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@68cc6fa4, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@2be83e7e, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@27558dee, org.springframework.security.web.session.SessionManagementFilter@768967cf, org.springframework.security.web.access.ExceptionTranslationFilter@6179551b, org.springframework.security.web.access.intercept.AuthorizationFilter@721f3526]
-2024-11-23 12:58:20.578 [main] INFO  o.s.c.n.e.c.DiscoveryClientOptionalArgsConfiguration - Eureka HTTP Client uses RestTemplate.
-2024-11-23 12:58:20.612 [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger - Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
-2024-11-23 12:58:20.655 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8085 (http) with context path '/api/v1/user_service'
-2024-11-23 12:58:20.842 [main] INFO  c.b.u.UserServiceApplication - Started UserServiceApplication in 7.114 seconds (process running for 7.525)
-2024-11-23 12:58:43.002 [http-nio-8085-exec-1] INFO  o.a.c.c.C.[.[.[/api/v1/user_service] - Initializing Spring DispatcherServlet 'dispatcherServlet'
-2024-11-23 12:58:43.002 [http-nio-8085-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
-2024-11-23 12:58:43.003 [http-nio-8085-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
-2024-11-23 12:58:43.396 [http-nio-8085-exec-1] DEBUG org.hibernate.SQL - 
+2024-11-23 14:41:07.618 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@46f3d0f7, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@592fbd8, org.springframework.security.web.context.SecurityContextHolderFilter@359f3401, org.springframework.security.web.header.HeaderWriterFilter@768967cf, org.springframework.security.web.authentication.logout.LogoutFilter@5702232d, com.billit.user_service.security.jwt.JwtAuthenticationFilter@354baab2, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@51d50b5f, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@78977b59, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@30be6a05, org.springframework.security.web.session.SessionManagementFilter@72dc7f0a, org.springframework.security.web.access.ExceptionTranslationFilter@709353b9, org.springframework.security.web.access.intercept.AuthorizationFilter@ba90170]
+2024-11-23 14:41:09.393 [main] INFO  o.s.cloud.commons.util.InetUtils - Cannot determine local hostname
+2024-11-23 14:41:09.424 [main] INFO  o.s.c.n.e.c.DiscoveryClientOptionalArgsConfiguration - Eureka HTTP Client uses RestTemplate.
+2024-11-23 14:41:09.484 [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger - Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+2024-11-23 14:41:09.515 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8085 (http) with context path '/api/v1/user_service'
+2024-11-23 14:41:10.868 [main] INFO  o.s.cloud.commons.util.InetUtils - Cannot determine local hostname
+2024-11-23 14:41:10.906 [main] INFO  c.b.u.UserServiceApplication - Started UserServiceApplication in 10.204 seconds (process running for 10.724)
+2024-11-23 14:41:15.253 [http-nio-8085-exec-1] INFO  o.a.c.c.C.[.[.[/api/v1/user_service] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-11-23 14:41:15.254 [http-nio-8085-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-11-23 14:41:15.255 [http-nio-8085-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2024-11-23 14:41:15.537 [http-nio-8085-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        u1_0.user_investor_id,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.updated_at,
+        u1_0.user_name 
+    from
+        user_invest u1_0 
+    where
+        u1_0.email=?
+2024-11-23 14:41:15.622 [http-nio-8085-exec-1] INFO  c.b.u.common.service.EmailService - 이메일 발송 시작. 수신자: allgreenms@gmail.com
+2024-11-23 14:41:15.661 [http-nio-8085-exec-1] DEBUG c.b.u.common.service.EmailService - 이메일 전송 시도
+2024-11-23 14:41:20.774 [http-nio-8085-exec-1] INFO  c.b.u.common.service.EmailService - 이메일 전송 성공
+2024-11-23 14:41:20.849 [http-nio-8085-exec-1] DEBUG org.hibernate.SQL - 
+    update
+        user_invest 
+    set
+        email=?,
+        password=?,
+        phone=?,
+        updated_at=?,
+        user_name=? 
+    where
+        user_investor_id=?
+2024-11-23 14:42:05.061 [main] INFO  c.b.u.UserServiceApplication - Starting UserServiceApplication using Java 17.0.13 with PID 14716 (C:\Users\KMS\Documents\GitHub\FullStack_BE_User\build\classes\java\main started by 김민석 in C:\Users\KMS\Documents\GitHub\FullStack_BE_User)
+2024-11-23 14:42:05.063 [main] DEBUG c.b.u.UserServiceApplication - Running with Spring Boot v3.1.5, Spring v6.0.13
+2024-11-23 14:42:05.064 [main] INFO  c.b.u.UserServiceApplication - No active profile set, falling back to 1 default profile: "default"
+2024-11-23 14:42:05.967 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-11-23 14:42:06.141 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 166 ms. Found 6 JPA repository interfaces.
+2024-11-23 14:42:06.377 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=3e8fc2cd-e8af-3553-bbca-5a611cc73ab7
+2024-11-23 14:42:06.839 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8085 (http)
+2024-11-23 14:42:06.847 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-11-23 14:42:06.848 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.15]
+2024-11-23 14:42:06.969 [main] INFO  o.a.c.c.C.[.[.[/api/v1/user_service] - Initializing Spring embedded WebApplicationContext
+2024-11-23 14:42:06.969 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1858 ms
+2024-11-23 14:42:07.129 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-11-23 14:42:07.194 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.13.Final
+2024-11-23 14:42:07.196 [main] INFO  org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+2024-11-23 14:42:07.480 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-11-23 14:42:07.510 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-11-23 14:42:07.652 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@6d7865d6
+2024-11-23 14:42:07.654 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-11-23 14:42:07.693 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2024-11-23 14:42:07.695 [main] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2024-11-23 14:42:08.658 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-11-23 14:42:08.732 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-11-23 14:42:09.369 [main] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: c9e78332-a2e2-49ea-91a4-e91949803719
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2024-11-23 14:42:09.623 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@592fbd8, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@354baab2, org.springframework.security.web.context.SecurityContextHolderFilter@242a3997, org.springframework.security.web.header.HeaderWriterFilter@116fe252, org.springframework.security.web.authentication.logout.LogoutFilter@5cbf9aee, com.billit.user_service.security.jwt.JwtAuthenticationFilter@30be6a05, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@38816a6c, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@4bf6bc2d, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@6812708d, org.springframework.security.web.session.SessionManagementFilter@18ada4e1, org.springframework.security.web.access.ExceptionTranslationFilter@69c53b72, org.springframework.security.web.access.intercept.AuthorizationFilter@452ea8f0]
+2024-11-23 14:42:11.277 [main] INFO  o.s.cloud.commons.util.InetUtils - Cannot determine local hostname
+2024-11-23 14:42:11.301 [main] INFO  o.s.c.n.e.c.DiscoveryClientOptionalArgsConfiguration - Eureka HTTP Client uses RestTemplate.
+2024-11-23 14:42:11.347 [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger - Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+2024-11-23 14:42:11.378 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8085 (http) with context path '/api/v1/user_service'
+2024-11-23 14:42:12.752 [main] INFO  o.s.cloud.commons.util.InetUtils - Cannot determine local hostname
+2024-11-23 14:42:12.773 [main] INFO  c.b.u.UserServiceApplication - Started UserServiceApplication in 9.625 seconds (process running for 10.08)
+2024-11-23 14:42:44.750 [http-nio-8085-exec-1] INFO  o.a.c.c.C.[.[.[/api/v1/user_service] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-11-23 14:42:44.751 [http-nio-8085-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-11-23 14:42:44.752 [http-nio-8085-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2024-11-23 14:42:45.038 [http-nio-8085-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        u1_0.user_investor_id,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.updated_at,
+        u1_0.user_name 
+    from
+        user_invest u1_0 
+    where
+        u1_0.email=?
+2024-11-23 14:42:45.130 [http-nio-8085-exec-1] INFO  c.b.u.common.service.EmailService - Attempting to send email to: allgreenms@gmail.com
+2024-11-23 14:42:47.547 [http-nio-8085-exec-1] ERROR c.b.u.common.service.EmailService - Failed to send email
+org.springframework.mail.MailSendException: Failed messages: com.sun.mail.smtp.SMTPSendFailedException: 555-5.5.2 Syntax error, cannot decode response. For more information, go to
+555-5.5.2  https://support.google.com/a/answer/3221692 and review RFC 5321
+555 5.5.2 specifications. d9443c01a7336-2129dbf97bfsm25130195ad.127 - gsmtp
+
+	at org.springframework.mail.javamail.JavaMailSenderImpl.doSend(JavaMailSenderImpl.java:491)
+	at org.springframework.mail.javamail.JavaMailSenderImpl.send(JavaMailSenderImpl.java:361)
+	at org.springframework.mail.javamail.JavaMailSenderImpl.send(JavaMailSenderImpl.java:356)
+	at com.billit.user_service.common.service.EmailService.sendPasswordResetEmail(EmailService.java:122)
+	at com.billit.user_service.user.service.UserInvestService.findPassword(UserInvestService.java:205)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:343)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:751)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:123)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:391)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:751)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:703)
+	at com.billit.user_service.user.service.UserInvestService$$SpringCGLIB$$0.findPassword(<generated>)
+	at com.billit.user_service.user.controller.UserInvestController.findPassword(UserInvestController.java:102)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:205)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:150)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:884)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:797)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1081)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:974)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1011)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:547)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:614)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:365)
+	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:100)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:126)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:120)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:131)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:85)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at com.billit.user_service.security.jwt.JwtAuthenticationFilter.doFilterInternal(JwtAuthenticationFilter.java:54)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:352)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:268)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:340)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2024-11-23 14:42:47.567 [http-nio-8085-exec-1] ERROR c.b.u.c.e.GlobalExceptionHandler - =============== CustomException ===============
+DateTime: 2024-11-23T14:42:47.567429500
+Request: uri=/api/v1/user_service/users/invest/find-password
+Code: E001
+Message: 이메일 발송에 실패했습니다.
+Position: com.billit.user_service.common.service.EmailService.sendPasswordResetEmail(EmailService.java:127)
+=============================================
+2024-11-23 14:43:06.518 [main] INFO  c.b.u.UserServiceApplication - Starting UserServiceApplication using Java 17.0.13 with PID 25312 (C:\Users\KMS\Documents\GitHub\FullStack_BE_User\build\classes\java\main started by 김민석 in C:\Users\KMS\Documents\GitHub\FullStack_BE_User)
+2024-11-23 14:43:06.520 [main] DEBUG c.b.u.UserServiceApplication - Running with Spring Boot v3.1.5, Spring v6.0.13
+2024-11-23 14:43:06.521 [main] INFO  c.b.u.UserServiceApplication - No active profile set, falling back to 1 default profile: "default"
+2024-11-23 14:43:07.368 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-11-23 14:43:07.539 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 164 ms. Found 6 JPA repository interfaces.
+2024-11-23 14:43:07.779 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=3e8fc2cd-e8af-3553-bbca-5a611cc73ab7
+2024-11-23 14:43:08.246 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8085 (http)
+2024-11-23 14:43:08.254 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-11-23 14:43:08.255 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.15]
+2024-11-23 14:43:08.377 [main] INFO  o.a.c.c.C.[.[.[/api/v1/user_service] - Initializing Spring embedded WebApplicationContext
+2024-11-23 14:43:08.377 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1809 ms
+2024-11-23 14:43:08.539 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-11-23 14:43:08.600 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.13.Final
+2024-11-23 14:43:08.602 [main] INFO  org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+2024-11-23 14:43:08.902 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-11-23 14:43:08.935 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-11-23 14:43:09.080 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@638977e0
+2024-11-23 14:43:09.081 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-11-23 14:43:09.120 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2024-11-23 14:43:09.122 [main] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2024-11-23 14:43:10.110 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-11-23 14:43:10.181 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-11-23 14:43:10.831 [main] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: 4360daf0-b2ce-4df2-8328-e7ed9764fdd9
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2024-11-23 14:43:11.119 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@452ea8f0, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@e417628, org.springframework.security.web.context.SecurityContextHolderFilter@18ada4e1, org.springframework.security.web.header.HeaderWriterFilter@709353b9, org.springframework.security.web.authentication.logout.LogoutFilter@149fab7f, com.billit.user_service.security.jwt.JwtAuthenticationFilter@46f3d0f7, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@359f3401, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@74727e41, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@592fbd8, org.springframework.security.web.session.SessionManagementFilter@df0b348, org.springframework.security.web.access.ExceptionTranslationFilter@203ba07, org.springframework.security.web.access.intercept.AuthorizationFilter@6f749a1f]
+2024-11-23 14:43:12.816 [main] INFO  o.s.cloud.commons.util.InetUtils - Cannot determine local hostname
+2024-11-23 14:43:12.832 [main] INFO  o.s.c.n.e.c.DiscoveryClientOptionalArgsConfiguration - Eureka HTTP Client uses RestTemplate.
+2024-11-23 14:43:12.887 [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger - Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+2024-11-23 14:43:12.917 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8085 (http) with context path '/api/v1/user_service'
+2024-11-23 14:43:14.302 [main] INFO  o.s.cloud.commons.util.InetUtils - Cannot determine local hostname
+2024-11-23 14:43:14.323 [main] INFO  c.b.u.UserServiceApplication - Started UserServiceApplication in 9.673 seconds (process running for 10.17)
+2024-11-23 14:43:15.736 [http-nio-8085-exec-1] INFO  o.a.c.c.C.[.[.[/api/v1/user_service] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-11-23 14:43:15.737 [http-nio-8085-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-11-23 14:43:15.738 [http-nio-8085-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2024-11-23 14:43:16.028 [http-nio-8085-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        u1_0.user_investor_id,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.updated_at,
+        u1_0.user_name 
+    from
+        user_invest u1_0 
+    where
+        u1_0.email=?
+2024-11-23 14:43:16.113 [http-nio-8085-exec-1] INFO  c.b.u.common.service.EmailService - 이메일 발송 시작. 수신자: allgreenms@gmail.com
+2024-11-23 14:43:16.154 [http-nio-8085-exec-1] DEBUG c.b.u.common.service.EmailService - 이메일 전송 시도
+2024-11-23 14:43:20.144 [http-nio-8085-exec-1] INFO  c.b.u.common.service.EmailService - 이메일 전송 성공
+2024-11-23 14:43:20.202 [http-nio-8085-exec-1] DEBUG org.hibernate.SQL - 
+    update
+        user_invest 
+    set
+        email=?,
+        password=?,
+        phone=?,
+        updated_at=?,
+        user_name=? 
+    where
+        user_investor_id=?
+2024-11-23 14:43:32.676 [http-nio-8085-exec-2] DEBUG org.hibernate.SQL - 
     select
         u1_0.user_borrow_id,
         u1_0.borrowment_grade,
@@ -50,9 +458,10 @@ This generated password is for development use only. Your security configuration
         user_borrow u1_0 
     where
         u1_0.email=?
-2024-11-23 12:58:43.516 [http-nio-8085-exec-1] INFO  c.b.u.common.service.EmailService - Attempting to send email to: allgreenms@gmail.com
-2024-11-23 12:58:48.813 [http-nio-8085-exec-1] INFO  c.b.u.common.service.EmailService - Email sent successfully
-2024-11-23 12:58:48.881 [http-nio-8085-exec-1] DEBUG org.hibernate.SQL - 
+2024-11-23 14:43:32.741 [http-nio-8085-exec-2] INFO  c.b.u.common.service.EmailService - 이메일 발송 시작. 수신자: allgreenms@naver.com
+2024-11-23 14:43:32.744 [http-nio-8085-exec-2] DEBUG c.b.u.common.service.EmailService - 이메일 전송 시도
+2024-11-23 14:43:36.617 [http-nio-8085-exec-2] INFO  c.b.u.common.service.EmailService - 이메일 전송 성공
+2024-11-23 14:43:36.622 [http-nio-8085-exec-2] DEBUG org.hibernate.SQL - 
     update
         user_borrow 
     set
@@ -66,43 +475,7 @@ This generated password is for development use only. Your security configuration
         user_name=? 
     where
         user_borrow_id=?
-2024-11-23 13:04:16.990 [main] INFO  c.b.u.UserServiceApplication - Starting UserServiceApplication using Java 17.0.12 with PID 4760 (C:\Users\user\Documents\GitHub\FullStack_BE_User\build\classes\java\main started by user in C:\Users\user\Documents\GitHub\FullStack_BE_User)
-2024-11-23 13:04:16.991 [main] DEBUG c.b.u.UserServiceApplication - Running with Spring Boot v3.1.5, Spring v6.0.13
-2024-11-23 13:04:16.992 [main] INFO  c.b.u.UserServiceApplication - No active profile set, falling back to 1 default profile: "default"
-2024-11-23 13:04:17.882 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2024-11-23 13:04:18.036 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 148 ms. Found 6 JPA repository interfaces.
-2024-11-23 13:04:18.270 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=3e8fc2cd-e8af-3553-bbca-5a611cc73ab7
-2024-11-23 13:04:18.827 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8085 (http)
-2024-11-23 13:04:18.836 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
-2024-11-23 13:04:18.837 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.15]
-2024-11-23 13:04:18.985 [main] INFO  o.a.c.c.C.[.[.[/api/v1/user_service] - Initializing Spring embedded WebApplicationContext
-2024-11-23 13:04:18.985 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1946 ms
-2024-11-23 13:04:19.222 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
-2024-11-23 13:04:19.341 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.13.Final
-2024-11-23 13:04:19.343 [main] INFO  org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
-2024-11-23 13:04:19.651 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
-2024-11-23 13:04:19.685 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
-2024-11-23 13:04:19.811 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@287ad0da
-2024-11-23 13:04:19.813 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
-2024-11-23 13:04:19.846 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2024-11-23 13:04:19.847 [main] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
-2024-11-23 13:04:20.801 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2024-11-23 13:04:20.889 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
-2024-11-23 13:04:21.695 [main] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
-
-Using generated security password: 9a3fb15a-9603-488a-8677-2155f30e2eac
-
-This generated password is for development use only. Your security configuration must be updated before running your application in production.
-
-2024-11-23 13:04:22.201 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@25c756f0, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@66c9aca2, org.springframework.security.web.context.SecurityContextHolderFilter@4dfbe8c2, org.springframework.security.web.header.HeaderWriterFilter@7b6558aa, org.springframework.security.web.authentication.logout.LogoutFilter@72dc7f0a, com.billit.user_service.security.jwt.JwtAuthenticationFilter@18206382, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@78a46d7b, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@440e2406, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@3e8c9981, org.springframework.security.web.session.SessionManagementFilter@64404db6, org.springframework.security.web.access.ExceptionTranslationFilter@23973547, org.springframework.security.web.access.intercept.AuthorizationFilter@78977b59]
-2024-11-23 13:04:22.765 [main] INFO  o.s.c.n.e.c.DiscoveryClientOptionalArgsConfiguration - Eureka HTTP Client uses RestTemplate.
-2024-11-23 13:04:22.802 [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger - Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
-2024-11-23 13:04:22.834 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8085 (http) with context path '/api/v1/user_service'
-2024-11-23 13:04:23.019 [main] INFO  c.b.u.UserServiceApplication - Started UserServiceApplication in 6.713 seconds (process running for 7.089)
-2024-11-23 13:04:46.879 [http-nio-8085-exec-1] INFO  o.a.c.c.C.[.[.[/api/v1/user_service] - Initializing Spring DispatcherServlet 'dispatcherServlet'
-2024-11-23 13:04:46.880 [http-nio-8085-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
-2024-11-23 13:04:46.881 [http-nio-8085-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
-2024-11-23 13:04:47.131 [http-nio-8085-exec-1] DEBUG org.hibernate.SQL - 
+2024-11-23 14:43:43.850 [http-nio-8085-exec-3] DEBUG org.hibernate.SQL - 
     select
         u1_0.user_borrow_id,
         u1_0.borrowment_grade,
@@ -118,485 +491,10 @@ This generated password is for development use only. Your security configuration
         user_borrow u1_0 
     where
         u1_0.email=?
-2024-11-23 13:04:47.210 [http-nio-8085-exec-1] INFO  c.b.u.common.service.EmailService - Attempting to send email to: allgreenms@gmail.com
-2024-11-23 13:04:51.327 [http-nio-8085-exec-1] INFO  c.b.u.common.service.EmailService - Email sent successfully
-2024-11-23 13:04:51.398 [http-nio-8085-exec-1] DEBUG org.hibernate.SQL - 
-    update
-        user_borrow 
-    set
-        borrowment_grade=?,
-        credit_rating=?,
-        credit_rating_date=?,
-        email=?,
-        password=?,
-        phone=?,
-        updated_at=?,
-        user_name=? 
-    where
-        user_borrow_id=?
-2024-11-23 13:07:32.291 [main] INFO  c.b.u.UserServiceApplication - Starting UserServiceApplication using Java 17.0.12 with PID 6512 (C:\Users\user\Documents\GitHub\FullStack_BE_User\build\classes\java\main started by user in C:\Users\user\Documents\GitHub\FullStack_BE_User)
-2024-11-23 13:07:32.294 [main] DEBUG c.b.u.UserServiceApplication - Running with Spring Boot v3.1.5, Spring v6.0.13
-2024-11-23 13:07:32.295 [main] INFO  c.b.u.UserServiceApplication - No active profile set, falling back to 1 default profile: "default"
-2024-11-23 13:07:33.157 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2024-11-23 13:07:33.316 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 153 ms. Found 6 JPA repository interfaces.
-2024-11-23 13:07:33.543 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=3e8fc2cd-e8af-3553-bbca-5a611cc73ab7
-2024-11-23 13:07:34.024 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8085 (http)
-2024-11-23 13:07:34.034 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
-2024-11-23 13:07:34.034 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.15]
-2024-11-23 13:07:34.180 [main] INFO  o.a.c.c.C.[.[.[/api/v1/user_service] - Initializing Spring embedded WebApplicationContext
-2024-11-23 13:07:34.181 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1834 ms
-2024-11-23 13:07:34.406 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
-2024-11-23 13:07:34.457 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.13.Final
-2024-11-23 13:07:34.459 [main] INFO  org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
-2024-11-23 13:07:34.744 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
-2024-11-23 13:07:34.778 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
-2024-11-23 13:07:34.902 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@1a139347
-2024-11-23 13:07:34.904 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
-2024-11-23 13:07:34.936 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2024-11-23 13:07:34.936 [main] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
-2024-11-23 13:07:35.852 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2024-11-23 13:07:35.928 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
-2024-11-23 13:07:36.764 [main] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
-
-Using generated security password: 0e0c26de-944d-491a-89d4-87b84bc64795
-
-This generated password is for development use only. Your security configuration must be updated before running your application in production.
-
-2024-11-23 13:07:37.227 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@70199db0, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@274b0c2a, org.springframework.security.web.context.SecurityContextHolderFilter@709353b9, org.springframework.security.web.header.HeaderWriterFilter@440e2406, org.springframework.security.web.authentication.logout.LogoutFilter@58ec04f4, com.billit.user_service.security.jwt.JwtAuthenticationFilter@721f3526, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@768967cf, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@6df605f, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@149fab7f, org.springframework.security.web.session.SessionManagementFilter@1c00a9f0, org.springframework.security.web.access.ExceptionTranslationFilter@3509f32d, org.springframework.security.web.access.intercept.AuthorizationFilter@5f910283]
-2024-11-23 13:07:37.766 [main] INFO  o.s.c.n.e.c.DiscoveryClientOptionalArgsConfiguration - Eureka HTTP Client uses RestTemplate.
-2024-11-23 13:07:37.812 [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger - Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
-2024-11-23 13:07:37.854 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8085 (http) with context path '/api/v1/user_service'
-2024-11-23 13:07:38.037 [main] INFO  c.b.u.UserServiceApplication - Started UserServiceApplication in 6.417 seconds (process running for 6.799)
-2024-11-23 13:08:05.873 [http-nio-8085-exec-1] INFO  o.a.c.c.C.[.[.[/api/v1/user_service] - Initializing Spring DispatcherServlet 'dispatcherServlet'
-2024-11-23 13:08:05.873 [http-nio-8085-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
-2024-11-23 13:08:05.874 [http-nio-8085-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
-2024-11-23 13:08:06.156 [http-nio-8085-exec-1] DEBUG org.hibernate.SQL - 
-    select
-        u1_0.user_borrow_id,
-        u1_0.borrowment_grade,
-        u1_0.created_at,
-        u1_0.credit_rating,
-        u1_0.credit_rating_date,
-        u1_0.email,
-        u1_0.password,
-        u1_0.phone,
-        u1_0.updated_at,
-        u1_0.user_name 
-    from
-        user_borrow u1_0 
-    where
-        u1_0.email=?
-2024-11-23 13:08:06.241 [http-nio-8085-exec-1] INFO  c.b.u.common.service.EmailService - Attempting to send email to: allgreenms@gmail.com
-2024-11-23 13:08:09.536 [http-nio-8085-exec-1] INFO  c.b.u.common.service.EmailService - Email sent successfully
-2024-11-23 13:08:09.602 [http-nio-8085-exec-1] DEBUG org.hibernate.SQL - 
-    update
-        user_borrow 
-    set
-        borrowment_grade=?,
-        credit_rating=?,
-        credit_rating_date=?,
-        email=?,
-        password=?,
-        phone=?,
-        updated_at=?,
-        user_name=? 
-    where
-        user_borrow_id=?
-2024-11-23 13:11:23.712 [main] INFO  c.b.u.UserServiceApplication - Starting UserServiceApplication using Java 17.0.12 with PID 30220 (C:\Users\user\Documents\GitHub\FullStack_BE_User\build\classes\java\main started by user in C:\Users\user\Documents\GitHub\FullStack_BE_User)
-2024-11-23 13:11:23.715 [main] DEBUG c.b.u.UserServiceApplication - Running with Spring Boot v3.1.5, Spring v6.0.13
-2024-11-23 13:11:23.716 [main] INFO  c.b.u.UserServiceApplication - No active profile set, falling back to 1 default profile: "default"
-2024-11-23 13:11:24.575 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2024-11-23 13:11:24.729 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 147 ms. Found 6 JPA repository interfaces.
-2024-11-23 13:11:24.968 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=3e8fc2cd-e8af-3553-bbca-5a611cc73ab7
-2024-11-23 13:11:25.522 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8085 (http)
-2024-11-23 13:11:25.536 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
-2024-11-23 13:11:25.536 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.15]
-2024-11-23 13:11:25.680 [main] INFO  o.a.c.c.C.[.[.[/api/v1/user_service] - Initializing Spring embedded WebApplicationContext
-2024-11-23 13:11:25.680 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1907 ms
-2024-11-23 13:11:25.947 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
-2024-11-23 13:11:26.081 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.13.Final
-2024-11-23 13:11:26.085 [main] INFO  org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
-2024-11-23 13:11:26.523 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
-2024-11-23 13:11:26.551 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
-2024-11-23 13:11:26.673 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@588d630d
-2024-11-23 13:11:26.675 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
-2024-11-23 13:11:26.721 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2024-11-23 13:11:26.721 [main] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
-2024-11-23 13:11:27.582 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2024-11-23 13:11:27.666 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
-2024-11-23 13:11:28.479 [main] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
-
-Using generated security password: 05754ff2-b911-4358-ad63-d42ab3e97b36
-
-This generated password is for development use only. Your security configuration must be updated before running your application in production.
-
-2024-11-23 13:11:28.953 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@58ec04f4, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@52b2713a, org.springframework.security.web.context.SecurityContextHolderFilter@6179551b, org.springframework.security.web.header.HeaderWriterFilter@530aa75c, org.springframework.security.web.authentication.logout.LogoutFilter@78977b59, com.billit.user_service.security.jwt.JwtAuthenticationFilter@54e39504, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@6f4e39b3, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@c725dfa, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@2bdf6c7c, org.springframework.security.web.session.SessionManagementFilter@440e2406, org.springframework.security.web.access.ExceptionTranslationFilter@7b8d1537, org.springframework.security.web.access.intercept.AuthorizationFilter@11c372e9]
-2024-11-23 13:11:29.554 [main] INFO  o.s.c.n.e.c.DiscoveryClientOptionalArgsConfiguration - Eureka HTTP Client uses RestTemplate.
-2024-11-23 13:11:29.591 [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger - Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
-2024-11-23 13:11:29.629 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8085 (http) with context path '/api/v1/user_service'
-2024-11-23 13:11:29.818 [main] INFO  c.b.u.UserServiceApplication - Started UserServiceApplication in 6.782 seconds (process running for 7.159)
-2024-11-23 13:11:30.804 [http-nio-8085-exec-1] INFO  o.a.c.c.C.[.[.[/api/v1/user_service] - Initializing Spring DispatcherServlet 'dispatcherServlet'
-2024-11-23 13:11:30.804 [http-nio-8085-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
-2024-11-23 13:11:30.806 [http-nio-8085-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
-2024-11-23 13:11:31.071 [http-nio-8085-exec-1] DEBUG org.hibernate.SQL - 
-    select
-        u1_0.user_borrow_id,
-        u1_0.borrowment_grade,
-        u1_0.created_at,
-        u1_0.credit_rating,
-        u1_0.credit_rating_date,
-        u1_0.email,
-        u1_0.password,
-        u1_0.phone,
-        u1_0.updated_at,
-        u1_0.user_name 
-    from
-        user_borrow u1_0 
-    where
-        u1_0.email=?
-2024-11-23 13:11:31.155 [http-nio-8085-exec-1] INFO  c.b.u.common.service.EmailService - Attempting to send email to: allgreenms@gmail.com
-2024-11-23 13:11:35.427 [http-nio-8085-exec-1] INFO  c.b.u.common.service.EmailService - Email sent successfully
-2024-11-23 13:11:35.493 [http-nio-8085-exec-1] DEBUG org.hibernate.SQL - 
-    update
-        user_borrow 
-    set
-        borrowment_grade=?,
-        credit_rating=?,
-        credit_rating_date=?,
-        email=?,
-        password=?,
-        phone=?,
-        updated_at=?,
-        user_name=? 
-    where
-        user_borrow_id=?
-2024-11-23 13:14:35.968 [main] INFO  c.b.u.UserServiceApplication - Starting UserServiceApplication using Java 17.0.12 with PID 7432 (C:\Users\user\Documents\GitHub\FullStack_BE_User\build\classes\java\main started by user in C:\Users\user\Documents\GitHub\FullStack_BE_User)
-2024-11-23 13:14:35.970 [main] DEBUG c.b.u.UserServiceApplication - Running with Spring Boot v3.1.5, Spring v6.0.13
-2024-11-23 13:14:35.970 [main] INFO  c.b.u.UserServiceApplication - No active profile set, falling back to 1 default profile: "default"
-2024-11-23 13:14:36.876 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2024-11-23 13:14:37.027 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 144 ms. Found 6 JPA repository interfaces.
-2024-11-23 13:14:37.273 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=3e8fc2cd-e8af-3553-bbca-5a611cc73ab7
-2024-11-23 13:14:37.847 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8085 (http)
-2024-11-23 13:14:37.858 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
-2024-11-23 13:14:37.859 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.15]
-2024-11-23 13:14:38.003 [main] INFO  o.a.c.c.C.[.[.[/api/v1/user_service] - Initializing Spring embedded WebApplicationContext
-2024-11-23 13:14:38.003 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1982 ms
-2024-11-23 13:14:38.281 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
-2024-11-23 13:14:38.443 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.13.Final
-2024-11-23 13:14:38.447 [main] INFO  org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
-2024-11-23 13:14:38.832 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
-2024-11-23 13:14:38.870 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
-2024-11-23 13:14:38.992 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@261a66b8
-2024-11-23 13:14:38.994 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
-2024-11-23 13:14:39.030 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2024-11-23 13:14:39.031 [main] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
-2024-11-23 13:14:39.864 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2024-11-23 13:14:39.935 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
-2024-11-23 13:14:40.765 [main] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
-
-Using generated security password: cb1d40d5-b2bb-40e1-9e4a-777a557243ca
-
-This generated password is for development use only. Your security configuration must be updated before running your application in production.
-
-2024-11-23 13:14:41.213 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@52d68eb9, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@1a557a52, org.springframework.security.web.context.SecurityContextHolderFilter@12ef7db5, org.springframework.security.web.header.HeaderWriterFilter@53f18591, org.springframework.security.web.authentication.logout.LogoutFilter@18206382, com.billit.user_service.security.jwt.JwtAuthenticationFilter@4ab959e8, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@3a8cc099, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@5e572ad6, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@39d4f046, org.springframework.security.web.session.SessionManagementFilter@6f4e39b3, org.springframework.security.web.access.ExceptionTranslationFilter@64404db6, org.springframework.security.web.access.intercept.AuthorizationFilter@54e39504]
-2024-11-23 13:14:41.782 [main] INFO  o.s.c.n.e.c.DiscoveryClientOptionalArgsConfiguration - Eureka HTTP Client uses RestTemplate.
-2024-11-23 13:14:41.810 [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger - Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
-2024-11-23 13:14:41.840 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8085 (http) with context path '/api/v1/user_service'
-2024-11-23 13:14:42.026 [main] INFO  c.b.u.UserServiceApplication - Started UserServiceApplication in 6.764 seconds (process running for 7.148)
-2024-11-23 13:14:47.809 [http-nio-8085-exec-1] INFO  o.a.c.c.C.[.[.[/api/v1/user_service] - Initializing Spring DispatcherServlet 'dispatcherServlet'
-2024-11-23 13:14:47.810 [http-nio-8085-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
-2024-11-23 13:14:47.810 [http-nio-8085-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 0 ms
-2024-11-23 13:14:48.091 [http-nio-8085-exec-1] DEBUG org.hibernate.SQL - 
-    select
-        u1_0.user_borrow_id,
-        u1_0.borrowment_grade,
-        u1_0.created_at,
-        u1_0.credit_rating,
-        u1_0.credit_rating_date,
-        u1_0.email,
-        u1_0.password,
-        u1_0.phone,
-        u1_0.updated_at,
-        u1_0.user_name 
-    from
-        user_borrow u1_0 
-    where
-        u1_0.email=?
-2024-11-23 13:14:48.170 [http-nio-8085-exec-1] INFO  c.b.u.common.service.EmailService - Attempting to send email to: allgreenms@gmail.com
-2024-11-23 13:14:51.497 [http-nio-8085-exec-1] INFO  c.b.u.common.service.EmailService - Email sent successfully
-2024-11-23 13:14:51.561 [http-nio-8085-exec-1] DEBUG org.hibernate.SQL - 
-    update
-        user_borrow 
-    set
-        borrowment_grade=?,
-        credit_rating=?,
-        credit_rating_date=?,
-        email=?,
-        password=?,
-        phone=?,
-        updated_at=?,
-        user_name=? 
-    where
-        user_borrow_id=?
-2024-11-23 13:16:47.982 [main] INFO  c.b.u.UserServiceApplication - Starting UserServiceApplication using Java 17.0.12 with PID 28092 (C:\Users\user\Documents\GitHub\FullStack_BE_User\build\classes\java\main started by user in C:\Users\user\Documents\GitHub\FullStack_BE_User)
-2024-11-23 13:16:47.984 [main] DEBUG c.b.u.UserServiceApplication - Running with Spring Boot v3.1.5, Spring v6.0.13
-2024-11-23 13:16:47.984 [main] INFO  c.b.u.UserServiceApplication - No active profile set, falling back to 1 default profile: "default"
-2024-11-23 13:16:48.871 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2024-11-23 13:16:49.031 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 154 ms. Found 6 JPA repository interfaces.
-2024-11-23 13:16:49.271 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=3e8fc2cd-e8af-3553-bbca-5a611cc73ab7
-2024-11-23 13:16:49.847 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8085 (http)
-2024-11-23 13:16:49.858 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
-2024-11-23 13:16:49.858 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.15]
-2024-11-23 13:16:50.014 [main] INFO  o.a.c.c.C.[.[.[/api/v1/user_service] - Initializing Spring embedded WebApplicationContext
-2024-11-23 13:16:50.015 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1973 ms
-2024-11-23 13:16:50.266 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
-2024-11-23 13:16:50.377 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.13.Final
-2024-11-23 13:16:50.383 [main] INFO  org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
-2024-11-23 13:16:50.704 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
-2024-11-23 13:16:50.740 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
-2024-11-23 13:16:50.872 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@261a66b8
-2024-11-23 13:16:50.873 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
-2024-11-23 13:16:50.907 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2024-11-23 13:16:50.908 [main] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
-2024-11-23 13:16:51.740 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2024-11-23 13:16:51.825 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
-2024-11-23 13:16:52.656 [main] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
-
-Using generated security password: 6cac938b-4cac-44e2-ad59-3a3f3cb129fe
-
-This generated password is for development use only. Your security configuration must be updated before running your application in production.
-
-2024-11-23 13:16:53.186 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@52d68eb9, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@1a557a52, org.springframework.security.web.context.SecurityContextHolderFilter@12ef7db5, org.springframework.security.web.header.HeaderWriterFilter@53f18591, org.springframework.security.web.authentication.logout.LogoutFilter@18206382, com.billit.user_service.security.jwt.JwtAuthenticationFilter@4ab959e8, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@3a8cc099, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@5e572ad6, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@39d4f046, org.springframework.security.web.session.SessionManagementFilter@6f4e39b3, org.springframework.security.web.access.ExceptionTranslationFilter@64404db6, org.springframework.security.web.access.intercept.AuthorizationFilter@54e39504]
-2024-11-23 13:16:53.749 [main] INFO  o.s.c.n.e.c.DiscoveryClientOptionalArgsConfiguration - Eureka HTTP Client uses RestTemplate.
-2024-11-23 13:16:53.785 [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger - Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
-2024-11-23 13:16:53.822 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8085 (http) with context path '/api/v1/user_service'
-2024-11-23 13:16:54.011 [main] INFO  c.b.u.UserServiceApplication - Started UserServiceApplication in 6.692 seconds (process running for 7.103)
-2024-11-23 13:16:55.337 [http-nio-8085-exec-1] INFO  o.a.c.c.C.[.[.[/api/v1/user_service] - Initializing Spring DispatcherServlet 'dispatcherServlet'
-2024-11-23 13:16:55.337 [http-nio-8085-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
-2024-11-23 13:16:55.343 [http-nio-8085-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 5 ms
-2024-11-23 13:16:55.622 [http-nio-8085-exec-1] DEBUG org.hibernate.SQL - 
-    select
-        u1_0.user_borrow_id,
-        u1_0.borrowment_grade,
-        u1_0.created_at,
-        u1_0.credit_rating,
-        u1_0.credit_rating_date,
-        u1_0.email,
-        u1_0.password,
-        u1_0.phone,
-        u1_0.updated_at,
-        u1_0.user_name 
-    from
-        user_borrow u1_0 
-    where
-        u1_0.email=?
-2024-11-23 13:16:55.709 [http-nio-8085-exec-1] INFO  c.b.u.common.service.EmailService - Attempting to send email to: allgreenms@gmail.com
-2024-11-23 13:16:58.991 [http-nio-8085-exec-1] INFO  c.b.u.common.service.EmailService - Email sent successfully
-2024-11-23 13:16:59.038 [http-nio-8085-exec-1] DEBUG org.hibernate.SQL - 
-    update
-        user_borrow 
-    set
-        borrowment_grade=?,
-        credit_rating=?,
-        credit_rating_date=?,
-        email=?,
-        password=?,
-        phone=?,
-        updated_at=?,
-        user_name=? 
-    where
-        user_borrow_id=?
-2024-11-23 13:20:55.673 [main] INFO  c.b.u.UserServiceApplication - Starting UserServiceApplication using Java 17.0.12 with PID 26764 (C:\Users\user\Documents\GitHub\FullStack_BE_User\build\classes\java\main started by user in C:\Users\user\Documents\GitHub\FullStack_BE_User)
-2024-11-23 13:20:55.676 [main] DEBUG c.b.u.UserServiceApplication - Running with Spring Boot v3.1.5, Spring v6.0.13
-2024-11-23 13:20:55.676 [main] INFO  c.b.u.UserServiceApplication - No active profile set, falling back to 1 default profile: "default"
-2024-11-23 13:20:56.625 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2024-11-23 13:20:56.778 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 148 ms. Found 6 JPA repository interfaces.
-2024-11-23 13:20:57.044 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=3e8fc2cd-e8af-3553-bbca-5a611cc73ab7
-2024-11-23 13:20:57.660 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8085 (http)
-2024-11-23 13:20:57.674 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
-2024-11-23 13:20:57.675 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.15]
-2024-11-23 13:20:57.817 [main] INFO  o.a.c.c.C.[.[.[/api/v1/user_service] - Initializing Spring embedded WebApplicationContext
-2024-11-23 13:20:57.817 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2089 ms
-2024-11-23 13:20:58.084 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
-2024-11-23 13:20:58.240 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.13.Final
-2024-11-23 13:20:58.245 [main] INFO  org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
-2024-11-23 13:20:58.657 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
-2024-11-23 13:20:58.691 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
-2024-11-23 13:20:58.813 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@186295cc
-2024-11-23 13:20:58.814 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
-2024-11-23 13:20:58.847 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2024-11-23 13:20:58.847 [main] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
-2024-11-23 13:20:59.670 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2024-11-23 13:20:59.775 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
-2024-11-23 13:21:00.540 [main] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
-
-Using generated security password: cd54c857-a43e-4c90-a674-56d9befc2673
-
-This generated password is for development use only. Your security configuration must be updated before running your application in production.
-
-2024-11-23 13:21:01.007 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@721f3526, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@149fab7f, org.springframework.security.web.context.SecurityContextHolderFilter@768967cf, org.springframework.security.web.header.HeaderWriterFilter@2cc7b63d, org.springframework.security.web.authentication.logout.LogoutFilter@54e39504, com.billit.user_service.security.jwt.JwtAuthenticationFilter@28d74041, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@7b8b755d, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@484dde7d, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5702232d, org.springframework.security.web.session.SessionManagementFilter@5e572ad6, org.springframework.security.web.access.ExceptionTranslationFilter@440e2406, org.springframework.security.web.access.intercept.AuthorizationFilter@6e5106fc]
-2024-11-23 13:21:01.590 [main] INFO  o.s.c.n.e.c.DiscoveryClientOptionalArgsConfiguration - Eureka HTTP Client uses RestTemplate.
-2024-11-23 13:21:01.639 [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger - Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
-2024-11-23 13:21:01.681 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8085 (http) with context path '/api/v1/user_service'
-2024-11-23 13:21:01.865 [main] INFO  c.b.u.UserServiceApplication - Started UserServiceApplication in 6.873 seconds (process running for 7.267)
-2024-11-23 13:21:05.275 [http-nio-8085-exec-1] INFO  o.a.c.c.C.[.[.[/api/v1/user_service] - Initializing Spring DispatcherServlet 'dispatcherServlet'
-2024-11-23 13:21:05.276 [http-nio-8085-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
-2024-11-23 13:21:05.277 [http-nio-8085-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
-2024-11-23 13:21:05.674 [http-nio-8085-exec-1] DEBUG org.hibernate.SQL - 
-    select
-        u1_0.user_borrow_id,
-        u1_0.borrowment_grade,
-        u1_0.created_at,
-        u1_0.credit_rating,
-        u1_0.credit_rating_date,
-        u1_0.email,
-        u1_0.password,
-        u1_0.phone,
-        u1_0.updated_at,
-        u1_0.user_name 
-    from
-        user_borrow u1_0 
-    where
-        u1_0.email=?
-2024-11-23 13:21:05.770 [http-nio-8085-exec-1] INFO  c.b.u.common.service.EmailService - Attempting to send email to: allgreenms@gmail.com
-2024-11-23 13:21:09.237 [http-nio-8085-exec-1] INFO  c.b.u.common.service.EmailService - Email sent successfully
-2024-11-23 13:21:09.301 [http-nio-8085-exec-1] DEBUG org.hibernate.SQL - 
-    update
-        user_borrow 
-    set
-        borrowment_grade=?,
-        credit_rating=?,
-        credit_rating_date=?,
-        email=?,
-        password=?,
-        phone=?,
-        updated_at=?,
-        user_name=? 
-    where
-        user_borrow_id=?
-2024-11-23 13:26:12.038 [main] INFO  c.b.u.UserServiceApplication - Starting UserServiceApplication using Java 17.0.12 with PID 10068 (C:\Users\user\Documents\GitHub\FullStack_BE_User\build\classes\java\main started by user in C:\Users\user\Documents\GitHub\FullStack_BE_User)
-2024-11-23 13:26:12.040 [main] DEBUG c.b.u.UserServiceApplication - Running with Spring Boot v3.1.5, Spring v6.0.13
-2024-11-23 13:26:12.041 [main] INFO  c.b.u.UserServiceApplication - No active profile set, falling back to 1 default profile: "default"
-2024-11-23 13:26:12.915 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2024-11-23 13:26:13.062 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 140 ms. Found 6 JPA repository interfaces.
-2024-11-23 13:26:13.313 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=3e8fc2cd-e8af-3553-bbca-5a611cc73ab7
-2024-11-23 13:26:13.838 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8085 (http)
-2024-11-23 13:26:13.848 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
-2024-11-23 13:26:13.849 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.15]
-2024-11-23 13:26:13.986 [main] INFO  o.a.c.c.C.[.[.[/api/v1/user_service] - Initializing Spring embedded WebApplicationContext
-2024-11-23 13:26:13.986 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1896 ms
-2024-11-23 13:26:14.274 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
-2024-11-23 13:26:14.446 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.13.Final
-2024-11-23 13:26:14.449 [main] INFO  org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
-2024-11-23 13:26:14.743 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
-2024-11-23 13:26:14.771 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
-2024-11-23 13:26:14.916 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@588d630d
-2024-11-23 13:26:14.918 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
-2024-11-23 13:26:14.950 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2024-11-23 13:26:14.951 [main] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
-2024-11-23 13:26:15.788 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2024-11-23 13:26:15.854 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
-2024-11-23 13:26:16.708 [main] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
-
-Using generated security password: 3fb471b9-a67d-473d-8df0-60dd70de11e7
-
-This generated password is for development use only. Your security configuration must be updated before running your application in production.
-
-2024-11-23 13:26:17.246 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@4b59a1c1, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@73418044, org.springframework.security.web.context.SecurityContextHolderFilter@56adb75e, org.springframework.security.web.header.HeaderWriterFilter@7b8d1537, org.springframework.security.web.authentication.logout.LogoutFilter@74727e41, com.billit.user_service.security.jwt.JwtAuthenticationFilter@58ec04f4, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@6179551b, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@55d35f7a, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@52b2713a, org.springframework.security.web.session.SessionManagementFilter@3509f32d, org.springframework.security.web.access.ExceptionTranslationFilter@96271d8, org.springframework.security.web.access.intercept.AuthorizationFilter@21e32876]
-2024-11-23 13:26:17.775 [main] INFO  o.s.c.n.e.c.DiscoveryClientOptionalArgsConfiguration - Eureka HTTP Client uses RestTemplate.
-2024-11-23 13:26:17.809 [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger - Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
-2024-11-23 13:26:17.848 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8085 (http) with context path '/api/v1/user_service'
-2024-11-23 13:26:18.032 [main] INFO  c.b.u.UserServiceApplication - Started UserServiceApplication in 6.664 seconds (process running for 7.124)
-2024-11-23 13:26:27.832 [http-nio-8085-exec-1] INFO  o.a.c.c.C.[.[.[/api/v1/user_service] - Initializing Spring DispatcherServlet 'dispatcherServlet'
-2024-11-23 13:26:27.833 [http-nio-8085-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
-2024-11-23 13:26:27.834 [http-nio-8085-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
-2024-11-23 13:26:28.111 [http-nio-8085-exec-1] DEBUG org.hibernate.SQL - 
-    select
-        u1_0.user_borrow_id,
-        u1_0.borrowment_grade,
-        u1_0.created_at,
-        u1_0.credit_rating,
-        u1_0.credit_rating_date,
-        u1_0.email,
-        u1_0.password,
-        u1_0.phone,
-        u1_0.updated_at,
-        u1_0.user_name 
-    from
-        user_borrow u1_0 
-    where
-        u1_0.email=?
-2024-11-23 13:26:28.193 [http-nio-8085-exec-1] INFO  c.b.u.common.service.EmailService - Attempting to send email to: allgreenms@gmail.com
-2024-11-23 13:26:32.121 [http-nio-8085-exec-1] INFO  c.b.u.common.service.EmailService - Email sent successfully
-2024-11-23 13:26:32.178 [http-nio-8085-exec-1] DEBUG org.hibernate.SQL - 
-    update
-        user_borrow 
-    set
-        borrowment_grade=?,
-        credit_rating=?,
-        credit_rating_date=?,
-        email=?,
-        password=?,
-        phone=?,
-        updated_at=?,
-        user_name=? 
-    where
-        user_borrow_id=?
-2024-11-23 13:29:22.914 [main] INFO  c.b.u.UserServiceApplication - Starting UserServiceApplication using Java 17.0.12 with PID 7096 (C:\Users\user\Documents\GitHub\FullStack_BE_User\build\classes\java\main started by user in C:\Users\user\Documents\GitHub\FullStack_BE_User)
-2024-11-23 13:29:22.915 [main] DEBUG c.b.u.UserServiceApplication - Running with Spring Boot v3.1.5, Spring v6.0.13
-2024-11-23 13:29:22.916 [main] INFO  c.b.u.UserServiceApplication - No active profile set, falling back to 1 default profile: "default"
-2024-11-23 13:29:23.753 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2024-11-23 13:29:23.903 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 143 ms. Found 6 JPA repository interfaces.
-2024-11-23 13:29:24.144 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=3e8fc2cd-e8af-3553-bbca-5a611cc73ab7
-2024-11-23 13:29:24.678 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8085 (http)
-2024-11-23 13:29:24.692 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
-2024-11-23 13:29:24.693 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.15]
-2024-11-23 13:29:24.822 [main] INFO  o.a.c.c.C.[.[.[/api/v1/user_service] - Initializing Spring embedded WebApplicationContext
-2024-11-23 13:29:24.823 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1856 ms
-2024-11-23 13:29:25.106 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
-2024-11-23 13:29:25.245 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.13.Final
-2024-11-23 13:29:25.247 [main] INFO  org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
-2024-11-23 13:29:25.503 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
-2024-11-23 13:29:25.532 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
-2024-11-23 13:29:25.655 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@7884f722
-2024-11-23 13:29:25.657 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
-2024-11-23 13:29:25.689 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2024-11-23 13:29:25.690 [main] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
-2024-11-23 13:29:26.497 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2024-11-23 13:29:26.563 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
-2024-11-23 13:29:27.341 [main] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
-
-Using generated security password: 29421285-2f3a-4100-b048-832e703f81c1
-
-This generated password is for development use only. Your security configuration must be updated before running your application in production.
-
-2024-11-23 13:29:27.836 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@4ab959e8, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@39d4f046, org.springframework.security.web.context.SecurityContextHolderFilter@3a8cc099, org.springframework.security.web.header.HeaderWriterFilter@2bb03136, org.springframework.security.web.authentication.logout.LogoutFilter@21e32876, com.billit.user_service.security.jwt.JwtAuthenticationFilter@5f910283, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1c00a9f0, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@69c53b72, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@6e2764c9, org.springframework.security.web.session.SessionManagementFilter@55d35f7a, org.springframework.security.web.access.ExceptionTranslationFilter@53f18591, org.springframework.security.web.access.intercept.AuthorizationFilter@13ac1657]
-2024-11-23 13:29:28.339 [main] INFO  o.s.c.n.e.c.DiscoveryClientOptionalArgsConfiguration - Eureka HTTP Client uses RestTemplate.
-2024-11-23 13:29:28.373 [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger - Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
-2024-11-23 13:29:28.417 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8085 (http) with context path '/api/v1/user_service'
-2024-11-23 13:29:28.603 [main] INFO  c.b.u.UserServiceApplication - Started UserServiceApplication in 6.35 seconds (process running for 6.727)
-2024-11-23 13:29:36.966 [http-nio-8085-exec-1] INFO  o.a.c.c.C.[.[.[/api/v1/user_service] - Initializing Spring DispatcherServlet 'dispatcherServlet'
-2024-11-23 13:29:36.967 [http-nio-8085-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
-2024-11-23 13:29:36.968 [http-nio-8085-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
-2024-11-23 13:29:37.352 [http-nio-8085-exec-1] DEBUG org.hibernate.SQL - 
-    select
-        u1_0.user_borrow_id,
-        u1_0.borrowment_grade,
-        u1_0.created_at,
-        u1_0.credit_rating,
-        u1_0.credit_rating_date,
-        u1_0.email,
-        u1_0.password,
-        u1_0.phone,
-        u1_0.updated_at,
-        u1_0.user_name 
-    from
-        user_borrow u1_0 
-    where
-        u1_0.email=?
-2024-11-23 13:29:37.453 [http-nio-8085-exec-1] INFO  c.b.u.common.service.EmailService - Attempting to send email to: allgreenms@gmail.com
-2024-11-23 13:29:41.036 [http-nio-8085-exec-1] INFO  c.b.u.common.service.EmailService - Email sent successfully
-2024-11-23 13:29:41.107 [http-nio-8085-exec-1] DEBUG org.hibernate.SQL - 
+2024-11-23 14:43:43.916 [http-nio-8085-exec-3] INFO  c.b.u.common.service.EmailService - 이메일 발송 시작. 수신자: allgreenms@naver.com
+2024-11-23 14:43:43.919 [http-nio-8085-exec-3] DEBUG c.b.u.common.service.EmailService - 이메일 전송 시도
+2024-11-23 14:43:47.759 [http-nio-8085-exec-3] INFO  c.b.u.common.service.EmailService - 이메일 전송 성공
+2024-11-23 14:43:47.762 [http-nio-8085-exec-3] DEBUG org.hibernate.SQL - 
     update
         user_borrow 
     set

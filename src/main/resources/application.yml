@@ -4,7 +4,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/user_service?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
-    username: test
+    username: root
     password: 1234
     hikari:
       read-only: false
@@ -15,15 +15,19 @@ spring:
     port: 587
     username: billit.project@gmail.com
     password: fudm pmdh gapt stxa
+    default-encoding: UTF-8
     properties:
       mail:
+        mime:
+          charset: UTF-8
         smtp:
           auth: true
           starttls:
             enable: true
-        transport:
-          protocol: smtp
-        debug: true
+            required: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
 
 
   jpa:
