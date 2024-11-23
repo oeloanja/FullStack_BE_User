@@ -1,25 +1,27 @@
 package com.billit.user_service.user.service;
 
 import com.billit.user_service.account.domain.repository.InvestAccountRepository;
+import com.billit.user_service.account.domain.repository.InvestAccountRepository;
+import com.billit.user_service.account.dto.response.AccountInvestResponse;
 import com.billit.user_service.account.dto.response.AccountInvestResponse;
 import com.billit.user_service.common.exception.CustomException;
 import com.billit.user_service.common.exception.ErrorCode;
+import com.billit.user_service.common.service.EmailService;
 import com.billit.user_service.security.jwt.JwtTokenProvider;
 import com.billit.user_service.user.domain.entity.UserInvest;
+import com.billit.user_service.user.domain.entity.UserInvest;
 import com.billit.user_service.user.domain.repository.UserInvestRepository;
-import com.billit.user_service.user.dto.request.LoginRequest;
-import com.billit.user_service.user.dto.request.PasswordUpdateRequest;
-import com.billit.user_service.user.dto.request.PhoneUpdateRequest;
-import com.billit.user_service.user.dto.request.UserInvestRequest;
-import com.billit.user_service.user.dto.response.LoginResponse;
-import com.billit.user_service.user.dto.response.MyPageResponse;
-import com.billit.user_service.user.dto.response.UserInvestResponse;
+import com.billit.user_service.user.domain.repository.UserInvestRepository;
+import com.billit.user_service.user.dto.request.*;
+import com.billit.user_service.user.dto.response.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,11 +30,12 @@ import java.util.stream.Collectors;
 public class UserInvestService {
 
     private final UserInvestRepository userInvestRepository;
-    private final InvestAccountRepository investAccountRepository;
+    private final InvestAccountRepository InvestAccountRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
+    private final EmailService emailService;
 
-    // 회원가입
+    // 회원가입 - 비밀번호 암호화 추가
     @Transactional
     public UserInvestResponse createUser(UserInvestRequest request) {
         request.validatePassword();
@@ -52,8 +55,8 @@ public class UserInvestService {
         return UserInvestResponse.of(savedUser);
     }
 
-    // 로그인
-    @Transactional
+    // 로그인 - JWT 토큰 발급 추가
+    @Transactional(readOnly = false)
     public LoginResponse<UserInvestResponse> login(LoginRequest request) {
         UserInvest user = userInvestRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
@@ -62,7 +65,7 @@ public class UserInvestService {
             throw new CustomException(ErrorCode.INVALID_PASSWORD);
         }
 
-        String accessToken = jwtTokenProvider.createAccessToken(user.getEmail(), "ROLE_INVESTOR");
+        String accessToken = jwtTokenProvider.createAccessToken(user.getEmail(), "ROLE_InvestER");
         String refreshToken = jwtTokenProvider.createRefreshToken(user.getEmail());
 
         return LoginResponse.of(accessToken, refreshToken, UserInvestResponse.of(user));
@@ -80,17 +83,62 @@ public class UserInvestService {
         UserInvest user = userInvestRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
-        String newAccessToken = jwtTokenProvider.createAccessToken(userEmail, "ROLE_INVESTOR");
+        String newAccessToken = jwtTokenProvider.createAccessToken(userEmail, "ROLE_InvestER");
 
         return LoginResponse.of(newAccessToken, refreshToken, UserInvestResponse.of(user));
     }
 
+    // 비밀번호 검증
+    public PasswordVerificationResponse verifyPassword(Long userId, PasswordVerificationRequest request) {
+        UserInvest user = userInvestRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new CustomException(ErrorCode.INVALID_PASSWORD);
+        }
+
+        String verificationToken = jwtTokenProvider.createVerificationToken(user.getEmail());
+        return PasswordVerificationResponse.builder()
+                .verificationToken(verificationToken)
+                .expiryTime(LocalDateTime.now().plusMinutes(30))
+                .build();
+    }
+
+    // 토큰 검증 유틸리티 메서드
+    private void validateVerificationToken(String token) {
+        if (token == null || !jwtTokenProvider.validateVerificationToken(token)) {
+            throw new CustomException(ErrorCode.UNAUTHORIZED_ACCESS);
+        }
+    }
+
+
     // 마이페이지 조회
-    public MyPageResponse getMyPage(Long userId) {
+    public MyPageResponse getMyPage(Long userId, String verificationToken) {
+        validateVerificationToken(verificationToken);
         UserInvest user = userInvestRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
         return MyPageResponse.of(user);
     }
+
+
+    // 비밀번호 변경 - 암호화된 비밀번호 비교
+    @Transactional
+    public void updatePassword(Long userId, PasswordUpdateRequest request, String verificationToken) {
+        validateVerificationToken(verificationToken);
+        UserInvest user = userInvestRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())) {
+            throw new CustomException(ErrorCode.PASSWORD_NOT_MATCHED);
+        }
+
+        if (!request.getNewPassword().equals(request.getNewPasswordConfirm())) {
+            throw new CustomException(ErrorCode.PASSWORD_NOT_MATCHED);
+        }
+
+        user.updatePassword(passwordEncoder.encode(request.getNewPassword()));
+    }
+
 
     // 사용자 정보 조회
     public UserInvestResponse getUserInfo(Long userId) {
@@ -98,7 +146,7 @@ public class UserInvestService {
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         // 해당 사용자의 계좌 정보 조회
-        List<AccountInvestResponse> accounts = investAccountRepository
+        List<AccountInvestResponse> accounts = InvestAccountRepository
                 .findAllByUserInvestIdAndIsDeletedFalse(userId)
                 .stream()
                 .map(AccountInvestResponse::of)
@@ -115,26 +163,10 @@ public class UserInvestService {
                 .build();
     }
 
-    // 비밀번호 변경
-    @Transactional
-    public void updatePassword(Long userId, PasswordUpdateRequest request) {
-        UserInvest user = userInvestRepository.findById(userId)
-                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
-
-        if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())) {
-            throw new CustomException(ErrorCode.PASSWORD_NOT_MATCHED);
-        }
-
-        if (!request.getNewPassword().equals(request.getNewPasswordConfirm())) {
-            throw new CustomException(ErrorCode.PASSWORD_NOT_MATCHED);
-        }
-
-        user.updatePassword(passwordEncoder.encode(request.getNewPassword()));
-    }
-
     // 전화번호 변경
     @Transactional
-    public void updatePhone(Long userId, PhoneUpdateRequest request) {
+    public void updatePhone(Long userId, PhoneUpdateRequest request, String verificationToken) {
+        validateVerificationToken(verificationToken);
         UserInvest user = userInvestRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
@@ -150,5 +182,64 @@ public class UserInvestService {
 
         // 리프레시 토큰 폐기 (revoke)
         jwtTokenProvider.revokeRefreshToken(refreshToken);
+    }
+
+    @Transactional
+    public FindPasswordResponse findPassword(FindPasswordRequest request) {
+        UserInvest user = userInvestRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        // 이름과 전화번호 확인
+        if (!user.getUserName().equals(request.getUserName()) ||
+                !user.getPhone().equals(request.getPhone())) {
+            throw new CustomException(ErrorCode.INVALID_USER_INFO);
+        }
+
+        // 임시 비밀번호 생성
+        String tempPassword = generateTempPassword();
+
+        // 비밀번호 암호화하여 저장
+        user.updatePassword(passwordEncoder.encode(tempPassword));
+
+        // 이메일 발송
+        emailService.sendPasswordResetEmail(user.getEmail(), tempPassword);
+
+        // 이메일 마스킹 처리 (예: test@example.com → t***@example.com)
+        String maskedEmail = maskEmail(user.getEmail());
+
+        return FindPasswordResponse.builder()
+                .userType("InvestER")
+                .email(maskedEmail)
+                .tempPassword(tempPassword)
+                .build();
+    }
+
+    // 임시 비밀번호 생성 메서드
+    private String generateTempPassword() {
+        // 숫자 + 영문자(대,소) + 특수문자 조합으로 10자리
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
+        StringBuilder tempPassword = new StringBuilder();
+        Random random = new Random();
+
+        for (int i = 0; i < 10; i++) {
+            tempPassword.append(chars.charAt(random.nextInt(chars.length())));
+        }
+
+        return tempPassword.toString();
+    }
+
+    // 이메일 마스킹 처리 메서드
+    private String maskEmail(String email) {
+        String[] parts = email.split("@");
+        if (parts.length != 2) return email;
+
+        String localPart = parts[0];
+        String domain = parts[1];
+
+        if (localPart.length() <= 1) return email;
+
+        return localPart.charAt(0) +
+                "*".repeat(localPart.length() - 1) +
+                "@" + domain;
     }
 }

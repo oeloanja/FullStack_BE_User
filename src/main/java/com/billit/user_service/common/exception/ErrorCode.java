@@ -21,6 +21,11 @@ public enum ErrorCode {
     USER_AUTHENTICATION_FAILED(HttpStatus.UNAUTHORIZED, "U004", "사용자 인증에 실패했습니다."),
     PASSWORD_NOT_MATCHED(HttpStatus.BAD_REQUEST, "U003", "비밀번호가 일치하지 않습니다."),
     INVALID_PASSWORD(HttpStatus.UNAUTHORIZED, "U004", "비밀번호가 일치하지 않습니다."),
+    INVALID_USER_INFO(HttpStatus.BAD_REQUEST, "U005", "사용자 정보가 일치하지 않습니다."),
+
+    // 이메일 관련
+    EMAIL_SEND_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "E001", "이메일 발송에 실패했습니다."),
+    INVALID_EMAIL_INFO(HttpStatus.BAD_REQUEST, "E002", "잘못된 이메일 정보입니다."),
 
     // Account 관련
     ACCOUNT_NOT_FOUND(HttpStatus.NOT_FOUND, "A001", "계좌를 찾을 수 없습니다."),
@@ -29,8 +34,6 @@ public enum ErrorCode {
     INVALID_ACCOUNT_STATUS(HttpStatus.BAD_REQUEST, "A004", "유효하지 않은 계좌 상태입니다."),
     ACCOUNT_VERIFICATION_FAILED(HttpStatus.BAD_REQUEST, "A005", "계좌 인증에 실패했습니다."),
     ACCOUNT_USER_MISMATCH(HttpStatus.FORBIDDEN, "A006", "해당 계좌에 대한 권한이 없습니다."),
-
-
 
     // Borrow 관련
     BORROW_NOT_FOUND(HttpStatus.NOT_FOUND, "B001", "대출 정보를 찾을 수 없습니다."),

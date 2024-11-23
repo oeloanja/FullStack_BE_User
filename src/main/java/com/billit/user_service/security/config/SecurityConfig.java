@@ -37,6 +37,7 @@ public class SecurityConfig {
                                 "/users/*/login",
                                 "/users/*/refresh",
                                 "/users/*/verify-password",
+                                "/users/*/find-password",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**"
                         ).permitAll()

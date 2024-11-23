@@ -1,10 +1,7 @@
 package com.billit.user_service.user.controller;
 
 import com.billit.user_service.user.dto.request.*;
-import com.billit.user_service.user.dto.response.LoginResponse;
-import com.billit.user_service.user.dto.response.MyPageResponse;
-import com.billit.user_service.user.dto.response.PasswordVerificationResponse;
-import com.billit.user_service.user.dto.response.UserBorrowResponse;
+import com.billit.user_service.user.dto.response.*;
 import com.billit.user_service.user.service.UserBorrowService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -96,5 +93,12 @@ public class UserBorrowController {
     public ResponseEntity<Void> logout(@RequestHeader("Refresh-Token") String refreshToken) {
         userBorrowService.logout(refreshToken);
         return ResponseEntity.ok().build();
+    }
+
+    // 비밀번호 찾기
+    @PostMapping("/find-password")
+    public ResponseEntity<FindPasswordResponse> findPassword(
+            @Valid @RequestBody FindPasswordRequest request) {
+        return ResponseEntity.ok(userBorrowService.findPassword(request));
     }
 }

@@ -4,14 +4,12 @@ import com.billit.user_service.account.domain.repository.BorrowAccountRepository
 import com.billit.user_service.account.dto.response.AccountBorrowResponse;
 import com.billit.user_service.common.exception.CustomException;
 import com.billit.user_service.common.exception.ErrorCode;
+import com.billit.user_service.common.service.EmailService;
 import com.billit.user_service.security.jwt.JwtTokenProvider;
 import com.billit.user_service.user.domain.entity.UserBorrow;
 import com.billit.user_service.user.domain.repository.UserBorrowRepository;
 import com.billit.user_service.user.dto.request.*;
-import com.billit.user_service.user.dto.response.LoginResponse;
-import com.billit.user_service.user.dto.response.MyPageResponse;
-import com.billit.user_service.user.dto.response.PasswordVerificationResponse;
-import com.billit.user_service.user.dto.response.UserBorrowResponse;
+import com.billit.user_service.user.dto.response.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,8 +18,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 
+
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,6 +33,7 @@ public class UserBorrowService {
     private final BorrowAccountRepository borrowAccountRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
+    private final EmailService emailService;
 
     // 회원가입 - 비밀번호 암호화 추가
     @Transactional
@@ -183,5 +184,64 @@ public class UserBorrowService {
 
         // 리프레시 토큰 폐기 (revoke)
         jwtTokenProvider.revokeRefreshToken(refreshToken);
+    }
+
+    @Transactional
+    public FindPasswordResponse findPassword(FindPasswordRequest request) {
+        UserBorrow user = userBorrowRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        // 이름과 전화번호 확인
+        if (!user.getUserName().equals(request.getUserName()) ||
+                !user.getPhone().equals(request.getPhone())) {
+            throw new CustomException(ErrorCode.INVALID_USER_INFO);
+        }
+
+        // 임시 비밀번호 생성
+        String tempPassword = generateTempPassword();
+
+        // 비밀번호 암호화하여 저장
+        user.updatePassword(passwordEncoder.encode(tempPassword));
+
+        // 이메일 발송
+        emailService.sendPasswordResetEmail(user.getEmail(), tempPassword);
+
+        // 이메일 마스킹 처리 (예: test@example.com → t***@example.com)
+        String maskedEmail = maskEmail(user.getEmail());
+
+        return FindPasswordResponse.builder()
+                .userType("BORROWER")
+                .email(maskedEmail)
+                .tempPassword(tempPassword)
+                .build();
+    }
+
+    // 임시 비밀번호 생성 메서드
+    private String generateTempPassword() {
+        // 숫자 + 영문자(대,소) + 특수문자 조합으로 10자리
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
+        StringBuilder tempPassword = new StringBuilder();
+        Random random = new Random();
+
+        for (int i = 0; i < 10; i++) {
+            tempPassword.append(chars.charAt(random.nextInt(chars.length())));
+        }
+
+        return tempPassword.toString();
+    }
+
+    // 이메일 마스킹 처리 메서드
+    private String maskEmail(String email) {
+        String[] parts = email.split("@");
+        if (parts.length != 2) return email;
+
+        String localPart = parts[0];
+        String domain = parts[1];
+
+        if (localPart.length() <= 1) return email;
+
+        return localPart.charAt(0) +
+                "*".repeat(localPart.length() - 1) +
+                "@" + domain;
     }
 }

@@ -9,6 +9,23 @@ spring:
     hikari:
       read-only: false
 
+      
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: billit.project@gmail.com
+    password: fudm pmdh gapt stxa
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+        transport:
+          protocol: smtp
+        debug: true
+
+
   jpa:
     database: mysql
     database-platform: org.hibernate.dialect.MySQL8Dialect
