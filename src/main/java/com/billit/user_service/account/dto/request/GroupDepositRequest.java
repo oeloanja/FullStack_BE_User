@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class GroupDepositRequest {
     @NotNull(message = "계좌 ID는 필수입니다.")
-    private Integer userBorrowAccountId;
+    private Integer accountBorrowId;
 
     @NotNull(message = "회원 ID는 필수입니다.")
     private Integer userBorrowId;

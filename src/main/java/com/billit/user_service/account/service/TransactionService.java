@@ -85,7 +85,7 @@ public class TransactionService {
     public List<TransactionResponse> depositGroupBorrow(List<GroupDepositRequest> requests) {
         requests.forEach(request -> {
             log.info("Processing GroupDepositRequest: {}", request);
-            if (request.getUserBorrowAccountId() == null) {
+            if (request.getAccountBorrowId() == null) {
                 log.error("accountBorrowId is null in request: {}", request);
             }
         });
@@ -93,7 +93,7 @@ public class TransactionService {
         return requests.stream()
                 .map(request -> {
                     // 1. 각 대출자의 계좌 조회
-                    BorrowAccount account = borrowAccountRepository.findById(Long.valueOf(request.getUserBorrowAccountId()))
+                    BorrowAccount account = borrowAccountRepository.findById(Long.valueOf(request.getAccountBorrowId()))
                             .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
 
                     // 2. 잔액 업데이트

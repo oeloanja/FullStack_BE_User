@@ -27,7 +27,7 @@ spring:
 server:
   port: 8085
   servlet:
-    context-path: /api/v1/user_service
+    context-path: /api/v1/user-service
 
 eureka:
   client:
