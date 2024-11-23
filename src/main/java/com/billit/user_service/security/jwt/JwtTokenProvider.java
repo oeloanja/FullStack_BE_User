@@ -133,4 +133,33 @@ public class JwtTokenProvider {
         token.setRevoked(true);
         refreshTokenRepository.save(token);
     }
+
+    // JwtTokenProvider.java에 추가
+    public String createVerificationToken(String userEmail) {
+        Date now = new Date();
+        Date validity = new Date(now.getTime() + 1000 * 60 * 30); // 30분 유효
+
+        return Jwts.builder()
+                .setSubject(userEmail)
+                .setIssuedAt(now)
+                .setExpiration(validity)
+                .claim("type", "verification")
+                .signWith(Keys.hmacShaKeyFor(secretKey.getBytes()))
+                .compact();
+    }
+
+    // 비밀번호 토큰
+    public boolean validateVerificationToken(String token) {
+        try {
+            Claims claims = Jwts.parserBuilder()
+                    .setSigningKey(secretKey.getBytes())
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+
+            return "verification".equals(claims.get("type"));
+        } catch (JwtException | IllegalArgumentException e) {
+            return false;
+        }
+    }
 }

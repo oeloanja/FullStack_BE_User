@@ -1,20 +1,20 @@
 package com.billit.user_service.user.controller;
 
-import com.billit.user_service.user.dto.request.LoginRequest;
-import com.billit.user_service.user.dto.request.PasswordUpdateRequest;
-import com.billit.user_service.user.dto.request.PhoneUpdateRequest;
-import com.billit.user_service.user.dto.request.UserBorrowRequest;
+import com.billit.user_service.user.dto.request.*;
 import com.billit.user_service.user.dto.response.LoginResponse;
 import com.billit.user_service.user.dto.response.MyPageResponse;
+import com.billit.user_service.user.dto.response.PasswordVerificationResponse;
 import com.billit.user_service.user.dto.response.UserBorrowResponse;
 import com.billit.user_service.user.service.UserBorrowService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("users/borrow")
+@RequestMapping("/users/borrow")
 @RequiredArgsConstructor
 public class UserBorrowController {
 
@@ -25,6 +25,14 @@ public class UserBorrowController {
         return ResponseEntity.ok(userBorrowService.getUserInfo(userId));
     }
 
+    // 비밀번호 검증 엔드포인트 추가
+    @PostMapping("/verify-password")
+    public ResponseEntity<PasswordVerificationResponse> verifyPassword(
+            @RequestParam Long userId,
+            @Valid @RequestBody PasswordVerificationRequest request) {
+        return ResponseEntity.ok(userBorrowService.verifyPassword(userId, request));
+    }
+
     // 회원가입
     @PostMapping("/signup")
     public ResponseEntity<UserBorrowResponse> createUser(
@@ -32,51 +40,61 @@ public class UserBorrowController {
         return ResponseEntity.ok(userBorrowService.createUser(request));
     }
 
-    // 로그인 - JWT 토큰 응답 추가
+    // 로그인
     @PostMapping("/login")
     public ResponseEntity<LoginResponse<UserBorrowResponse>> login(
             @Valid @RequestBody LoginRequest request) {
         return ResponseEntity.ok(userBorrowService.login(request));
     }
 
-    @PostMapping("/refresh")
-    public ResponseEntity<LoginResponse<UserBorrowResponse>> refresh(
-            @RequestHeader("Authorization") String refreshToken) {
-        // Bearer 제거
-        String token = refreshToken.substring(7);
-        return ResponseEntity.ok(userBorrowService.refreshToken(token));
-    }
-
-
-    // 마이페이지 조회 - JWT 토큰으로 인증
+    // 마이페이지 조회 - 검증 토큰 필요
     @GetMapping("/mypage")
-    public ResponseEntity<MyPageResponse> getMyPage(@RequestParam Long userId) {
-        return ResponseEntity.ok(userBorrowService.getMyPage(userId));
+    public ResponseEntity<MyPageResponse> getMyPage(
+            @RequestParam Long userId,
+            @RequestHeader(value = "Authorization") String verificationToken) {
+        if (verificationToken != null && verificationToken.startsWith("Bearer ")) {
+            return ResponseEntity.ok(userBorrowService.getMyPage(userId, verificationToken.substring(7)));
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
-    // 비밀번호 변경 - JWT 토큰으로 인증
+    // 비밀번호 변경 - 검증 토큰 필요
     @PutMapping("/password")
     public ResponseEntity<Void> updatePassword(
             @RequestParam Long userId,
+            @RequestHeader(value = "Authorization") String verificationToken,
             @Valid @RequestBody PasswordUpdateRequest request) {
-        userBorrowService.updatePassword(userId, request);
-        return ResponseEntity.ok().build();
+        if (verificationToken != null && verificationToken.startsWith("Bearer ")) {
+            userBorrowService.updatePassword(userId, request, verificationToken.substring(7));
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
-    // 전화번호 변경 - JWT 토큰으로 인증
+    // 전화번호 변경 - 검증 토큰 필요
     @PutMapping("/phone")
     public ResponseEntity<Void> updatePhone(
             @RequestParam Long userId,
+            @RequestHeader(value = "Authorization") String verificationToken,
             @Valid @RequestBody PhoneUpdateRequest request) {
-        userBorrowService.updatePhone(userId, request);
-        return ResponseEntity.ok().build();
+        if (verificationToken != null && verificationToken.startsWith("Bearer ")) {
+            userBorrowService.updatePhone(userId, request, verificationToken.substring(7));
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
+    // 토큰 갱신
+    @PostMapping("/refresh")
+    public ResponseEntity<LoginResponse<UserBorrowResponse>> refreshToken(
+            @RequestHeader("Refresh-Token") String refreshToken) {
+        return ResponseEntity.ok(userBorrowService.refreshToken(refreshToken));
+    }
+
+    // 로그아웃
     @PostMapping("/logout")
-    public ResponseEntity<Void> logout(@RequestHeader("Authorization") String refreshToken) {
-        // Bearer 제거
-        String token = refreshToken.substring(7);
-        userBorrowService.logout(token);  // borrow 또는 invest service
+    public ResponseEntity<Void> logout(@RequestHeader("Refresh-Token") String refreshToken) {
+        userBorrowService.logout(refreshToken);
         return ResponseEntity.ok().build();
     }
 }
