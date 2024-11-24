@@ -53,7 +53,7 @@ public class AccountBorrowService {
 
     // 계좌 삭제 (상태 변경)
     @Transactional
-    public void deleteAccount(Long userId, Long accountId) {
+    public void deleteAccount(Long userId, Integer accountId) {
         BorrowAccount account = borrowAccountRepository.findByIdAndIsDeletedFalse(accountId)
                 .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
 

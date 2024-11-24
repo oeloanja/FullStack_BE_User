@@ -53,7 +53,7 @@ public class AccountInvestService {
 
     // 계좌 삭제 (상태 변경)
     @Transactional
-    public void deleteAccount(Long userId, Long accountId) {
+    public void deleteAccount(Long userId, Integer accountId) {
         InvestAccount account = InvestAccountRepository.findByIdAndIsDeletedFalse(accountId)
                 .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
 

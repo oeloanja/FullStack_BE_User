@@ -43,14 +43,14 @@ public class InvestTransactionController {
     @GetMapping("/history/{accountId}")
     public ResponseEntity<List<TransactionResponse>> getTransactionHistory(
             @RequestParam Long userId,
-            @PathVariable Long accountId) {
+            @PathVariable Integer accountId) {
         return ResponseEntity.ok(transactionService.getInvestTransactionHistory(userId, accountId));
     }
 
     @GetMapping("/balance/{accountId}")
     public ResponseEntity<BigDecimal> getBalance(
             @RequestParam Long userId,
-            @PathVariable Long accountId) {
+            @PathVariable Integer accountId) {
         return ResponseEntity.ok(transactionService.getInvestBalance(userId, accountId));
     }
 }

@@ -7,8 +7,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface TransactionRepository extends JpaRepository<Transaction, Long> {
-    List<Transaction> findByBorrowAccountId(Long accountId);
-    List<Transaction> findByInvestAccountId(Long accountId);
+public interface TransactionRepository extends JpaRepository<Transaction, Integer> {
+    List<Transaction> findByBorrowAccountId(Integer accountId);
+    List<Transaction> findByInvestAccountId(Integer accountId);
     List<Transaction> findByTransactionId(String transactionId);
 }

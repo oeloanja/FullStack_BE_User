@@ -3,7 +3,7 @@ spring:
     name: user-service
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/user_service?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://localhost:3309/user_service?useSSL=false&createDatabaseIfNotExist=true&serverTimezone=UTC&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
     username: root
     password: 1234
     hikari:
@@ -48,13 +48,13 @@ spring:
 server:
   port: 8085
   servlet:
-    context-path: /api/v1/user_service
+    context-path: /api/v1/user-service
 
 eureka:
   client:
-    enabled: false
+    #enabled: false
     service-url:
-      defaultZone: http://192.168.10.18:8761/eureka
+      defaultZone: http://localhost:8761/eureka
   instance:
     prefer-ip-address: true
 
