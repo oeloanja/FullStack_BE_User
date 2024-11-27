@@ -41,6 +41,10 @@ public class UserBorrow extends BaseTimeEntity {
     @Column(name = "borrowment_grade")
     private String borrowmentGrade;
 
+    @Column(nullable = false)
+    private boolean emailVerified = false;
+
+
 
     @Builder
     public UserBorrow(String email, String password, String userName, String phone) {
@@ -49,6 +53,7 @@ public class UserBorrow extends BaseTimeEntity {
         this.userName = userName;
         this.phone = phone;
         this.borrowmentGrade = "BASIC";  // 초기 등급 설정
+        this.emailVerified = false;
     }
 
     public void updateCreditRating(Integer creditRating) {
@@ -62,5 +67,9 @@ public class UserBorrow extends BaseTimeEntity {
 
     public void updatePhone(String newPhone) {
         this.phone = newPhone;
+    }
+
+    public void verifyEmail() {
+        this.emailVerified = true;
     }
 }

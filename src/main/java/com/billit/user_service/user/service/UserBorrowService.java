@@ -6,7 +6,9 @@ import com.billit.user_service.common.exception.CustomException;
 import com.billit.user_service.common.exception.ErrorCode;
 import com.billit.user_service.common.service.EmailService;
 import com.billit.user_service.security.jwt.JwtTokenProvider;
+import com.billit.user_service.user.domain.entity.EmailVerification;
 import com.billit.user_service.user.domain.entity.UserBorrow;
+import com.billit.user_service.user.domain.repository.EmailVerificationRepository;
 import com.billit.user_service.user.domain.repository.UserBorrowRepository;
 import com.billit.user_service.user.dto.request.*;
 import com.billit.user_service.user.dto.response.*;
@@ -34,6 +36,7 @@ public class UserBorrowService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final EmailService emailService;
+    private final EmailVerificationRepository emailVerificationRepository;
 
     // 회원가입 - 비밀번호 암호화 추가
     @Transactional
@@ -243,5 +246,59 @@ public class UserBorrowService {
         return localPart.charAt(0) +
                 "*".repeat(localPart.length() - 1) +
                 "@" + domain;
+    }
+
+    @Transactional
+    public EmailVerificationResponse sendEmailVerification(EmailVerificationRequest request) {
+        // 이미 가입된 이메일인지 확인
+        if (userBorrowRepository.existsByEmail(request.getEmail())) {  // userInvestService의 경우 userInvestRepository
+            throw new CustomException(ErrorCode.USER_ALREADY_EXISTS);
+        }
+
+        // 인증 코드 생성 (6자리)
+        String verificationCode = String.format("%06d", new Random().nextInt(1000000));
+
+        // 인증 정보 저장
+        EmailVerification verification = EmailVerification.builder()
+                .email(request.getEmail())
+                .verificationCode(verificationCode)
+                .expiryDate(LocalDateTime.now().plusMinutes(10))
+                .build();
+
+        emailVerificationRepository.save(verification);
+
+        // 이메일 발송
+        emailService.sendVerificationEmail(request.getEmail(), verificationCode);
+
+        return EmailVerificationResponse.of(
+                request.getEmail(),
+                "인증 코드가 발송되었습니다. 10분 이내에 인증을 완료해주세요.",
+                verification.getExpiryDate()
+        );
+    }
+
+    // 이메일 인증 코드 확인
+    @Transactional
+    public EmailVerificationResponse verifyEmail(EmailVerificationConfirmRequest request) {
+        EmailVerification verification = emailVerificationRepository
+                .findByEmailAndVerificationCode(request.getEmail(), request.getCode())
+                .orElseThrow(() -> new CustomException(ErrorCode.INVALID_VERIFICATION_CODE));
+
+        if (verification.isExpired()) {
+            throw new CustomException(ErrorCode.VERIFICATION_CODE_EXPIRED);
+        }
+
+        if (verification.isVerified()) {
+            throw new CustomException(ErrorCode.ALREADY_VERIFIED);
+        }
+
+        verification.verify();
+        emailVerificationRepository.save(verification);
+
+        return EmailVerificationResponse.of(
+                request.getEmail(),
+                "이메일 인증이 완료되었습니다.",
+                null
+        );
     }
 }

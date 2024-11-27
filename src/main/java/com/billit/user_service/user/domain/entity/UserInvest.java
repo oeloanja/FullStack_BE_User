@@ -30,12 +30,16 @@ public class UserInvest extends BaseTimeEntity {
     @Column(nullable = false, length = 20)
     private String phone;
 
+    @Column(nullable = false)
+    private boolean emailVerified = false;
+
     @Builder
     public UserInvest(String email, String password, String userName, String phone) {
         this.email = email;
         this.password = password;
         this.userName = userName;
         this.phone = phone;
+        this.emailVerified = false;
     }
 
     public void updatePassword(String newPassword) {
@@ -45,4 +49,9 @@ public class UserInvest extends BaseTimeEntity {
     public void updatePhone(String newPhone) {
         this.phone = newPhone;
     }
+
+    public void verifyEmail() {
+        this.emailVerified = true;
+    }
+
 }

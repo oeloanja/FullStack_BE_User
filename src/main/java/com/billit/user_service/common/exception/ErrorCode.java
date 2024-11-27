@@ -26,6 +26,12 @@ public enum ErrorCode {
     // 이메일 관련
     EMAIL_SEND_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "E001", "이메일 발송에 실패했습니다."),
     INVALID_EMAIL_INFO(HttpStatus.BAD_REQUEST, "E002", "잘못된 이메일 정보입니다."),
+    INVALID_VERIFICATION_CODE(HttpStatus.BAD_REQUEST, "E003", "잘못된 인증 코드입니다."),
+    VERIFICATION_CODE_EXPIRED(HttpStatus.BAD_REQUEST, "E004", "만료된 인증 코드입니다."),
+    ALREADY_VERIFIED(HttpStatus.BAD_REQUEST, "E005", "이미 인증이 완료되었습니다."),
+    VERIFICATION_REQUIRED(HttpStatus.BAD_REQUEST, "E006", "이메일 인증이 필요합니다."),
+
+
 
     // Account 관련
     ACCOUNT_NOT_FOUND(HttpStatus.NOT_FOUND, "A001", "계좌를 찾을 수 없습니다."),
