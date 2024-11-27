@@ -19,7 +19,7 @@ public class ServiceAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        String serviceName = request.getHeader("X-Service-Name");
+        String serviceName = request.getHeader("x-service-name");
 
         log.info("All Headers:");
         Enumeration<String> headerNames = request.getHeaderNames();
@@ -31,7 +31,7 @@ public class ServiceAuthenticationFilter extends OncePerRequestFilter {
         log.info("Request URI: {}", request.getRequestURI());
         log.info("Service Name Header: {}", serviceName);
 
-        if ("loan-group-service".equals(serviceName)||"investment-service".equals(serviceName)) {
+        if ("loan-group-service".equals(serviceName)||"investment-service".equals(serviceName)||"repayment-service".equals(serviceName)) {
             SecurityContextHolder.getContext()
                     .setAuthentication(new UsernamePasswordAuthenticationToken(null, null, null));
         }
