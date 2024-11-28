@@ -57,6 +57,7 @@ public class UserBorrowService {
                 .build();
 
         UserBorrow savedUser = userBorrowRepository.save(userBorrow);
+        System.out.println("회원가입");
         return UserBorrowResponse.of(savedUser);
     }
 
