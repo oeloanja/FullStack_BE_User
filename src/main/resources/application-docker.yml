@@ -1,13 +1,13 @@
 spring:
   application:
-    name: USER-SERVICE
+    name: user-service
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3309/user_service?useSSL=false&createDatabaseIfNotExist=true&serverTimezone=UTC&characterEncoding=UTF-8&allowPublicKeyRetrieval=true&useSSL=false
+    url: jdbc:mysql://mysql-user:3306/user_service?useSSL=false&createDatabaseIfNotExist=true&serverTimezone=UTC&characterEncoding=UTF-8&allowPublicKeyRetrieval=true&useSSL=false
     username: root
     password: 1234
 
-      
+
   mail:
     host: smtp.gmail.com
     port: 587
@@ -36,20 +36,6 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
 
-feign:
-  client:
-    config:
-      loan-group-service:
-        url: ${LOAN_GROUP_SERVICE_URL:http://host.docker.internal:8084}
-      invest-service:
-        url: ${INVEST_SERVICE_URL:http://host.docker.internal:8081}
-      repayment-service:
-        url: ${REPAYMENT_SERVICE_URL:http://host.docker.internal:8082}
-      loan-service:
-        url: ${LOAN_SERVICE_URL:http://host.docker.internal:8083}
-      user-service:
-        url: ${USER_SERVICE_URL:http://host.docker.internal:8085}
-
 
 server:
   port: 8085
@@ -57,12 +43,9 @@ server:
     context-path: /api/v1/user-service
 
 eureka:
-  instance:
-    prefer-ip-address: true
-    ip-address: host.docker.internal
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE}
     register-with-eureka: true
     fetch-registry: true
 
