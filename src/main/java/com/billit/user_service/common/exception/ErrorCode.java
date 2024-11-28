@@ -31,7 +31,8 @@ public enum ErrorCode {
     ALREADY_VERIFIED(HttpStatus.BAD_REQUEST, "E005", "이미 인증이 완료되었습니다."),
     VERIFICATION_REQUIRED(HttpStatus.BAD_REQUEST, "E006", "이메일 인증이 필요합니다."),
 
-
+    // 마스터 코드
+    INVALID_MASTER_CODE(HttpStatus.UNAUTHORIZED, "M001", "유효하지 않은 마스터 코드입니다."),
 
     // Account 관련
     ACCOUNT_NOT_FOUND(HttpStatus.NOT_FOUND, "A001", "계좌를 찾을 수 없습니다."),

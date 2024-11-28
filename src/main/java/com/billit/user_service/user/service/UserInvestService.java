@@ -12,6 +12,7 @@ import com.billit.user_service.user.domain.entity.EmailVerification;
 import com.billit.user_service.user.domain.entity.UserInvest;
 import com.billit.user_service.user.domain.entity.UserInvest;
 import com.billit.user_service.user.domain.repository.EmailVerificationRepository;
+import com.billit.user_service.user.domain.repository.MasterCodeRepository;
 import com.billit.user_service.user.domain.repository.UserInvestRepository;
 import com.billit.user_service.user.domain.repository.UserInvestRepository;
 import com.billit.user_service.user.dto.request.*;
@@ -37,6 +38,7 @@ public class UserInvestService {
     private final JwtTokenProvider jwtTokenProvider;
     private final EmailService emailService;
     private final EmailVerificationRepository emailVerificationRepository;
+    private final MasterCodeRepository masterCodeRepository;
 
     // 회원가입 - 비밀번호 암호화 추가
     @Transactional
@@ -280,6 +282,23 @@ public class UserInvestService {
     // 이메일 인증 코드 확인
     @Transactional
     public EmailVerificationResponse verifyEmail(EmailVerificationConfirmRequest request) {
+        // 마스터 코드(0000) 체크 추가
+        if ("0000".equals(request.getCode())) {
+            EmailVerification verification = EmailVerification.builder()
+                    .email(request.getEmail())
+                    .verificationCode("0000")
+                    .expiryDate(LocalDateTime.now().plusMinutes(10))
+                    .build();
+            verification.verify();
+            emailVerificationRepository.save(verification);
+
+            return EmailVerificationResponse.of(
+                    request.getEmail(),
+                    "이메일 인증이 완료되었습니다.",
+                    null
+            );
+        }
+
         EmailVerification verification = emailVerificationRepository
                 .findByEmailAndVerificationCode(request.getEmail(), request.getCode())
                 .orElseThrow(() -> new CustomException(ErrorCode.INVALID_VERIFICATION_CODE));
