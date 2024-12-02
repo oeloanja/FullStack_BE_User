@@ -37,6 +37,20 @@ public class UserBorrowController {
         return ResponseEntity.ok(userBorrowService.createUser(request));
     }
 
+    // 인증코드 발송
+    @PostMapping("/email/verification")
+    public ResponseEntity<EmailVerificationResponse> sendEmailVerification(
+            @Valid @RequestBody EmailVerificationRequest request) {
+        return ResponseEntity.ok(userBorrowService.sendEmailVerification(request));
+    }
+
+    // 인증 확인
+    @PostMapping("/email/verify")
+    public ResponseEntity<EmailVerificationResponse> verifyEmail(
+            @Valid @RequestBody EmailVerificationConfirmRequest request) {
+        return ResponseEntity.ok(userBorrowService.verifyEmail(request));
+    }
+
     // 로그인
     @PostMapping("/login")
     public ResponseEntity<LoginResponse<UserBorrowResponse>> login(

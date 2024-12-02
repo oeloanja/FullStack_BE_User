@@ -37,6 +37,20 @@ public class UserInvestController {
         return ResponseEntity.ok(userInvestService.createUser(request));
     }
 
+    // 인증코드 발송
+    @PostMapping("/email/verification")
+    public ResponseEntity<EmailVerificationResponse> sendEmailVerification(
+            @Valid @RequestBody EmailVerificationRequest request) {
+        return ResponseEntity.ok(userInvestService.sendEmailVerification(request));
+    }
+
+    // 인증 확인
+    @PostMapping("/email/verify")
+    public ResponseEntity<EmailVerificationResponse> verifyEmail(
+            @Valid @RequestBody EmailVerificationConfirmRequest request) {
+        return ResponseEntity.ok(userInvestService.verifyEmail(request));
+    }
+
     // 로그인
     @PostMapping("/login")
     public ResponseEntity<LoginResponse<UserInvestResponse>> login(
