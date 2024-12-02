@@ -42,7 +42,9 @@ public class SecurityConfig {
                                 "/users/*/verify-password",
                                 "/users/*/find-password",
                                 "/swagger-ui/**",
-                                "/v3/api-docs/**"
+                                "/v3/api-docs/**",
+                                "/users/*/email/verification",
+                                "/users/*/email/verify"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
