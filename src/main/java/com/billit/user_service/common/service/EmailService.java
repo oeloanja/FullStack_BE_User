@@ -23,62 +23,54 @@ public class EmailService {
             MimeMessage mimeMessage = emailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 
-            helper.setFrom("billit.project@gmail.com"); // 발신자 이메일 추가
+            helper.setFrom("billit.project@gmail.com");
             helper.setTo(to);
             helper.setSubject("[BillIt] 임시 비밀번호가 발급되었습니다");
 
-            String content = String.format("""
-                    <!DOCTYPE html>
-                    <html>
-                    <head>
-                        <meta charset="UTF-8">
-                        <title>임시 비밀번호가 발급되었습니다</title>
-                        <style>
-                            body { font-family: 'Arial', sans-serif; line-height: 1.6; }
-                            .container { max-width: 600px; margin: 20px auto; padding: 20px; }
-                            .header { text-align: center; margin-bottom: 30px; }
-                            .content { margin: 20px 0; }
-                            .password-box { 
-                                background: #f8f9fa; 
-                                padding: 15px; 
-                                margin: 20px 0; 
-                                text-align: center; 
-                                font-size: 20px; 
-                                font-weight: bold;
-                                border-radius: 5px;
-                            }
-                            .footer { 
-                                margin-top: 30px; 
-                                padding-top: 20px; 
-                                border-top: 1px solid #ddd; 
-                                font-size: 12px; 
-                                color: #666; 
-                                text-align: center;
-                            }
-                        </style>
-                    </head>
-                    <body>
-                        <div class="container">
-                            <div class="header">
-                                <h2>임시 비밀번호 발급 안내</h2>
-                            </div>
-                            <div class="content">
-                                <p>안녕하세요. BillIt 서비스입니다.</p>
-                                <p>요청하신 임시 비밀번호가 발급되었습니다.</p>
-                                <div class="password-box">
-                                    %s
-                                </div>
-                                <p>보안을 위해 로그인 후 반드시 비밀번호를 변경해 주시기 바랍니다.</p>
-                                <p>본 임시 비밀번호는 24시간 동안만 유효합니다.</p>
-                            </div>
-                            <div class="footer">
-                                <p>본 메일은 발신전용이며, 문의사항은 고객센터를 이용해 주시기 바랍니다.</p>
-                                <p>&copy; 2024 BillIt. All rights reserved.</p>
-                            </div>
-                        </div>
-                    </body>
-                    </html>
-                    """, tempPassword);
+            String content = "<!DOCTYPE html>" +
+                    "<html>" +
+                    "<head>" +
+                    "<meta charset='UTF-8'>" +
+                    "<title>임시 비밀번호가 발급되었습니다</title>" +
+                    "</head>" +
+                    "<body style='margin: 0; padding: 0; font-family: Arial, \"Malgun Gothic\", sans-serif;'>" +
+                    "  <table width='100%' cellpadding='0' cellspacing='0' style='background-color: #f8f9fa;'>" +
+                    "    <tr>" +
+                    "      <td align='center' style='padding: 40px 0;'>" +
+                    "        <table width='600' cellpadding='0' cellspacing='0' style='background-color: #ffffff; border: 1px solid #dee2e6;'>" +
+                    "          <tr>" +
+                    "            <td style='padding: 40px;'>" +
+                    "              <h1 style='color: #40E0D0; font-size: 28px; font-weight: bold; margin: 20px 0; text-align: center;'>임시 비밀번호 발급 안내</h1>" +
+                    "              <div style='margin: 30px 0; padding: 20px; background-color: #f8f9fa; border-left: 4px solid #40E0D0;'>" +
+                    "                <p style='margin: 0;'>안녕하세요. <span style='color: #20B2AA; font-weight: bold;'>BillIt</span> 서비스를 이용해 주셔서 감사합니다.</p>" +
+                    "                <p style='margin: 10px 0 0 0;'>회원님의 계정 보안을 위한 임시 비밀번호가 발급되었습니다.</p>" +
+                    "              </div>" +
+                    "              <div style='background: #40E0D0; color: white; padding: 25px; margin: 30px 0; text-align: center; font-weight: bold; font-size: 24px; letter-spacing: 2px;'>" +
+                    tempPassword +
+                    "              </div>" +
+                    "              <div style='background-color: #fff3cd; border: 1px solid #ffeeba; color: #856404; padding: 15px; margin: 25px 0; font-size: 14px;'>" +
+                    "                ⚠️ <strong>보안을 위한 주의사항</strong><br>" +
+                    "                • 임시 비밀번호로 로그인 후 반드시 새로운 비밀번호로 변경해 주세요.<br>" +
+                    "                • 본 이메일의 임시 비밀번호는 24시간 동안만 유효합니다." +
+                    "              </div>" +
+                    "              <hr style='border: none; height: 1px; background-color: #dee2e6; margin: 30px 0;'>" +
+                    "              <p style='font-size: 13px; color: #666; text-align: center; margin: 0;'>" +
+                    "                본 메일은 발신전용이며, 문의사항은 <span style='color: #20B2AA; font-weight: bold;'>고객센터</span>를 이용해 주시기 바랍니다." +
+                    "              </p>" +
+                    "            </td>" +
+                    "          </tr>" +
+                    "          <tr>" +
+                    "            <td style='padding: 20px 40px; text-align: center; border-top: 1px solid #dee2e6;'>" +
+                    "              <p style='font-size: 13px; color: #6c757d; margin: 0;'>&copy; 2024 BillIt. All rights reserved.</p>" +
+                    "              <p style='font-size: 13px; color: #6c757d; margin: 10px 0 0 0;'>본 메일은 회원님의 요청으로 발송된 이메일입니다.</p>" +
+                    "            </td>" +
+                    "          </tr>" +
+                    "        </table>" +
+                    "      </td>" +
+                    "    </tr>" +
+                    "  </table>" +
+                    "</body>" +
+                    "</html>";
 
             helper.setText(content, true);
 
@@ -103,64 +95,48 @@ public class EmailService {
             helper.setTo(to);
             helper.setSubject("[BillIt] 이메일 인증을 완료해주세요");
 
-            String content = String.format("""
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <meta charset="UTF-8">
-                    <title>이메일 인증 코드</title>
-                    <style>
-                        body { font-family: 'Arial', sans-serif; line-height: 1.6; }
-                        .container { max-width: 600px; margin: 20px auto; padding: 20px; }
-                        .header { text-align: center; margin-bottom: 30px; }
-                        .content { margin: 20px 0; }
-                        .verification-box { 
-                            background: #f8f9fa; 
-                            padding: 15px; 
-                            margin: 20px 0; 
-                            text-align: center; 
-                            font-size: 24px; 
-                            font-weight: bold;
-                            letter-spacing: 2px;
-                            border-radius: 5px;
-                        }
-                        .warning { 
-                            color: #dc3545; 
-                            font-weight: bold; 
-                            margin: 20px 0; 
-                        }
-                        .footer { 
-                            margin-top: 30px; 
-                            padding-top: 20px; 
-                            border-top: 1px solid #ddd; 
-                            font-size: 12px; 
-                            color: #666; 
-                            text-align: center;
-                        }
-                    </style>
-                </head>
-                <body>
-                    <div class="container">
-                        <div class="header">
-                            <h2>이메일 인증 코드 안내</h2>
-                        </div>
-                        <div class="content">
-                            <p>안녕하세요. BillIt 서비스입니다.</p>
-                            <p>회원가입을 위한 인증 코드를 안내드립니다.</p>
-                            <div class="verification-box">
-                                %s
-                            </div>
-                            <p class="warning">인증 코드는 10분간만 유효합니다.</p>
-                            <p>본인이 요청하지 않은 경우 이 메일을 무시하셔도 됩니다.</p>
-                        </div>
-                        <div class="footer">
-                            <p>본 메일은 발신전용이며, 문의사항은 고객센터를 이용해 주시기 바랍니다.</p>
-                            <p>&copy; 2024 BillIt. All rights reserved.</p>
-                        </div>
-                    </div>
-                </body>
-                </html>
-                """, verificationCode);
+            String content = "<!DOCTYPE html>" +
+                    "<html>" +
+                    "<head>" +
+                    "<meta charset='UTF-8'>" +
+                    "<title>이메일 인증 코드</title>" +
+                    "</head>" +
+                    "<body style='margin: 0; padding: 0; font-family: Arial, \"Malgun Gothic\", sans-serif;'>" +
+                    "  <table width='100%' cellpadding='0' cellspacing='0' style='background-color: #f8f9fa;'>" +
+                    "    <tr>" +
+                    "      <td align='center' style='padding: 40px 0;'>" +
+                    "        <table width='600' cellpadding='0' cellspacing='0' style='background-color: #ffffff; border: 1px solid #dee2e6;'>" +
+                    "          <tr>" +
+                    "            <td style='padding: 40px;'>" +
+                    "              <h1 style='color: #40E0D0; font-size: 28px; font-weight: bold; margin: 20px 0; text-align: center;'>이메일 인증 코드 안내</h1>" +
+                    "              <div style='margin: 30px 0; padding: 20px; background-color: #f8f9fa; border-left: 4px solid #40E0D0;'>" +
+                    "                <p style='margin: 0;'>안녕하세요. <span style='color: #20B2AA; font-weight: bold;'>BillIt</span> 서비스입니다.</p>" +
+                    "                <p style='margin: 10px 0 0 0;'>회원가입을 위한 인증 코드를 안내드립니다.</p>" +
+                    "              </div>" +
+                    "              <div style='background: #40E0D0; color: white; padding: 25px; margin: 30px 0; text-align: center; font-weight: bold; font-size: 24px; letter-spacing: 2px;'>" +
+                    verificationCode +
+                    "              </div>" +
+                    "              <div style='background-color: #fff3cd; border: 1px solid #ffeeba; color: #856404; padding: 15px; margin: 25px 0;'>" +
+                    "                <p style='margin: 0; font-weight: bold;'>⚠️ 인증 코드는 10분간만 유효합니다.</p>" +
+                    "                <p style='margin: 10px 0 0 0;'>본인이 요청하지 않은 경우 이 메일을 무시하셔도 됩니다.</p>" +
+                    "              </div>" +
+                    "              <hr style='border: none; height: 1px; background-color: #dee2e6; margin: 30px 0;'>" +
+                    "              <p style='font-size: 13px; color: #666; text-align: center; margin: 0;'>" +
+                    "                본 메일은 발신전용이며, 문의사항은 <span style='color: #20B2AA; font-weight: bold;'>고객센터</span>를 이용해 주시기 바랍니다." +
+                    "              </p>" +
+                    "            </td>" +
+                    "          </tr>" +
+                    "          <tr>" +
+                    "            <td style='padding: 20px 40px; text-align: center; border-top: 1px solid #dee2e6;'>" +
+                    "              <p style='font-size: 13px; color: #6c757d; margin: 0;'>&copy; 2024 BillIt. All rights reserved.</p>" +
+                    "            </td>" +
+                    "          </tr>" +
+                    "        </table>" +
+                    "      </td>" +
+                    "    </tr>" +
+                    "  </table>" +
+                    "</body>" +
+                    "</html>";
 
             helper.setText(content, true);
 
