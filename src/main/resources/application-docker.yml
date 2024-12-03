@@ -27,6 +27,19 @@ spring:
           timeout: 5000
           writetimeout: 5000
 
+  kafka:
+    bootstrap-servers: kafka:9092
+    consumer:
+      group-id: user-service
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
 
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
