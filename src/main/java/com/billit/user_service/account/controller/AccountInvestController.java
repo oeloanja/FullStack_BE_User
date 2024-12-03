@@ -26,6 +26,14 @@ public class AccountInvestController {
         return ResponseEntity.ok(accountInvestService.createAccount(userId, request));
     }
 
+    // 단일 계좌 조회
+    @GetMapping("/detail/{accountId}")
+    public ResponseEntity<AccountInvestResponse> getAccountDetail(
+            @RequestParam Long userId,
+            @PathVariable Integer accountId) {
+        return ResponseEntity.ok(accountInvestService.getAccountDetail(userId, accountId));
+    }
+
     // 계좌 목록 조회
     @GetMapping
     public ResponseEntity<List<AccountInvestResponse>> getAccounts(

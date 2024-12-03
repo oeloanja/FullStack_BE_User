@@ -43,6 +43,19 @@ public class AccountBorrowService {
         return AccountBorrowResponse.of(borrowAccountRepository.save(account));
     }
 
+
+    // 단일 계좌 조회
+    public AccountBorrowResponse getAccountDetail(Long userId, Integer accountId) {
+        BorrowAccount account = borrowAccountRepository.findByIdAndIsDeletedFalse(accountId)
+                .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
+
+        if (!account.getUserBorrow().getId().equals(userId)) {
+            throw new CustomException(ErrorCode.ACCOUNT_USER_MISMATCH);
+        }
+
+        return AccountBorrowResponse.of(account);
+    }
+
     // 계좌 목록 조회
     public List<AccountBorrowResponse> getAccounts(Long userId) {
         return borrowAccountRepository.findAllByUserBorrowIdAndIsDeletedFalse(userId)

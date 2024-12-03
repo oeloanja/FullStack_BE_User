@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class AccountInvestService {
 
-    private final InvestAccountRepository InvestAccountRepository;
+    private final InvestAccountRepository investAccountRepository;
     private final UserInvestRepository userInvestRepository;
 
     // 계좌 등록
@@ -29,7 +29,7 @@ public class AccountInvestService {
         UserInvest user = userInvestRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
-        if (InvestAccountRepository.existsByAccountNumberAndIsDeletedFalse(request.getAccountNumber())) {
+        if (investAccountRepository.existsByAccountNumberAndIsDeletedFalse(request.getAccountNumber())) {
             throw new CustomException(ErrorCode.ACCOUNT_ALREADY_REGISTERED);
         }
 
@@ -40,12 +40,24 @@ public class AccountInvestService {
                 .accountHolder(request.getAccountHolder())
                 .build();
 
-        return AccountInvestResponse.of(InvestAccountRepository.save(account));
+        return AccountInvestResponse.of(investAccountRepository.save(account));
+    }
+
+    // 단일 계좌 조회
+    public AccountInvestResponse getAccountDetail(Long userId, Integer accountId) {
+        InvestAccount account = investAccountRepository.findByIdAndIsDeletedFalse(accountId)
+                .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
+
+        if (!account.getUserInvest().getId().equals(userId)) {
+            throw new CustomException(ErrorCode.ACCOUNT_USER_MISMATCH);
+        }
+
+        return AccountInvestResponse.of(account);
     }
 
     // 계좌 목록 조회
     public List<AccountInvestResponse> getAccounts(Long userId) {
-        return InvestAccountRepository.findAllByUserInvestIdAndIsDeletedFalse(userId)
+        return investAccountRepository.findAllByUserInvestIdAndIsDeletedFalse(userId)
                 .stream()
                 .map(AccountInvestResponse::of)
                 .collect(Collectors.toList());
@@ -54,7 +66,7 @@ public class AccountInvestService {
     // 계좌 삭제 (상태 변경)
     @Transactional
     public void deleteAccount(Long userId, Integer accountId) {
-        InvestAccount account = InvestAccountRepository.findByIdAndIsDeletedFalse(accountId)
+        InvestAccount account = investAccountRepository.findByIdAndIsDeletedFalse(accountId)
                 .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
 
         if (!account.getUserInvest().getId().equals(userId)) {
