@@ -1,9 +1,9 @@
 package com.billit.user_service.kafka.consumer;
 
-import com.billit.common.event.LoanDisbursementEvent;
 import com.billit.user_service.account.dto.request.GroupDepositRequest;
 import com.billit.user_service.account.dto.response.TransactionResponse;
 import com.billit.user_service.account.service.TransactionService;
+import com.billit.user_service.kafka.event.LoanDisbursementEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;

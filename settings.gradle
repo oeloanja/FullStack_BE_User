@@ -1,2 +1,1 @@
 rootProject.name = 'user_service'
-include 'common'

@@ -1,9 +1,11 @@
 package com.billit.user_service.kafka.config;
 
-import com.billit.common.event.LoanDisbursementEvent;
+import com.billit.user_service.kafka.event.LoanDisbursementEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,7 +37,8 @@ public class KafkaConfig {
         props.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer.class);
-        props.put(ErrorHandlingDeserializer.VALUE_DESERIALIZER_CLASS, JsonDeserializer.class);
+        props.put(ErrorHandlingDeserializer.VALUE_DESERIALIZER_CLASS, CustomJsonDeserializer.class);
+        props.put("value.deserializer.type", LoanDisbursementEvent.class);
         props.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
         return props;
     }
@@ -43,7 +46,9 @@ public class KafkaConfig {
     @Bean
     public ConsumerFactory<String, LoanDisbursementEvent> loanDisbursementEventConsumerFactory() {
         return new DefaultKafkaConsumerFactory<>(
-                consumerConfigs()
+                consumerConfigs(),
+                new StringDeserializer(),
+                new CustomJsonDeserializer<>(LoanDisbursementEvent.class)
         );
     }
 
