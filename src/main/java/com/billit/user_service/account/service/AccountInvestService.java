@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,7 +26,7 @@ public class AccountInvestService {
 
     // 계좌 등록
     @Transactional
-    public AccountInvestResponse createAccount(Long userId, AccountInvestRequest request) {
+    public AccountInvestResponse createAccount(UUID userId, AccountInvestRequest request) {
         UserInvest user = userInvestRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
@@ -44,7 +45,7 @@ public class AccountInvestService {
     }
 
     // 계좌 목록 조회
-    public List<AccountInvestResponse> getAccounts(Long userId) {
+    public List<AccountInvestResponse> getAccounts(UUID userId) {
         return InvestAccountRepository.findAllByUserInvestIdAndIsDeletedFalse(userId)
                 .stream()
                 .map(AccountInvestResponse::of)
@@ -53,7 +54,7 @@ public class AccountInvestService {
 
     // 계좌 삭제 (상태 변경)
     @Transactional
-    public void deleteAccount(Long userId, Integer accountId) {
+    public void deleteAccount(UUID userId, Integer accountId) {
         InvestAccount account = InvestAccountRepository.findByIdAndIsDeletedFalse(accountId)
                 .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
 

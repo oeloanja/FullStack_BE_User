@@ -5,10 +5,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
-public interface BorrowAccountRepository extends JpaRepository<BorrowAccount, Long> {
-    List<BorrowAccount> findAllByUserBorrowIdAndIsDeletedFalse(Long userBorrowId);
+public interface BorrowAccountRepository extends JpaRepository<BorrowAccount, Integer> {
+    List<BorrowAccount> findAllByUserBorrowIdAndIsDeletedFalse(UUID userBorrowId);
     Optional<BorrowAccount> findByIdAndIsDeletedFalse(Integer id);
-    Optional<BorrowAccount> findByAccountNumberAndIsDeletedFalse(String accountNumber);  // 추가
+    Optional<BorrowAccount> findByAccountNumberAndIsDeletedFalse(String accountNumber);
     boolean existsByAccountNumberAndIsDeletedFalse(String accountNumber);
 }

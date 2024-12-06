@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.AccessLevel;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Entity
 @Table(name = "user_borrow")
@@ -16,9 +17,8 @@ import java.time.LocalDate;
 public class UserBorrow extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_borrow_id")
-    private Long id;
+    @Column(name = "user_borrow_id", columnDefinition = "VARCHAR(36)")
+    private UUID id = UUID.randomUUID();
 
     @Column(nullable = false, unique = true)
     private String email;

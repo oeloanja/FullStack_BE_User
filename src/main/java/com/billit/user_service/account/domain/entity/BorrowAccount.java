@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -21,7 +22,7 @@ public class BorrowAccount extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column(nullable = false)
     private String bankName;
@@ -33,7 +34,7 @@ public class BorrowAccount extends BaseTimeEntity {
     private String accountHolder;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_borrow_id")
+    @JoinColumn(name = "user_borrow_id", columnDefinition = "VARCHAR(36)")
     private UserBorrow userBorrow;
 
     @Column(nullable = false)

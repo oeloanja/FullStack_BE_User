@@ -7,11 +7,12 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Builder
 public class UserBorrowResponse {
-    private Long userBorrowId;
+    private UUID userBorrowId;
     private String email;
     private String password;
     private String userName;

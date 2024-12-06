@@ -18,7 +18,7 @@ public class Transaction extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column(nullable = false)
     private String transactionId;  // 거래 고유 번호

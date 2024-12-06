@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -95,7 +96,7 @@ public class UserBorrowService {
     }
 
     // 비밀번호 검증
-    public PasswordVerificationResponse verifyPassword(Long userId, PasswordVerificationRequest request) {
+    public PasswordVerificationResponse verifyPassword(UUID userId, PasswordVerificationRequest request) {
         UserBorrow user = userBorrowRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
@@ -119,7 +120,7 @@ public class UserBorrowService {
 
 
     // 마이페이지 조회
-    public MyPageResponse getMyPage(Long userId, String verificationToken) {
+    public MyPageResponse getMyPage(UUID userId, String verificationToken) {
         validateVerificationToken(verificationToken);
         UserBorrow user = userBorrowRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
@@ -129,7 +130,7 @@ public class UserBorrowService {
 
     // 비밀번호 변경 - 암호화된 비밀번호 비교
     @Transactional
-    public void updatePassword(Long userId, PasswordUpdateRequest request, String verificationToken) {
+    public void updatePassword(UUID userId, PasswordUpdateRequest request, String verificationToken) {
         validateVerificationToken(verificationToken);
         UserBorrow user = userBorrowRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
@@ -147,7 +148,7 @@ public class UserBorrowService {
 
 
     // 사용자 정보 조회
-    public UserBorrowResponse getUserInfo(Long userId) {
+    public UserBorrowResponse getUserInfo(UUID userId) {
         UserBorrow user = userBorrowRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
@@ -173,7 +174,7 @@ public class UserBorrowService {
 
     // 전화번호 변경
     @Transactional
-    public void updatePhone(Long userId, PhoneUpdateRequest request, String verificationToken) {
+    public void updatePhone(UUID userId, PhoneUpdateRequest request, String verificationToken) {
         validateVerificationToken(verificationToken);
         UserBorrow user = userBorrowRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));

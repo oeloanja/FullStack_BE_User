@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/accounts/invest/transaction")
@@ -21,35 +22,35 @@ public class InvestTransactionController {
 
     @PostMapping("/deposit")
     public ResponseEntity<TransactionResponse> deposit(
-            @RequestParam Long userId,
+            @RequestParam UUID userId,
             @Valid @RequestBody DepositRequest request) {
         return ResponseEntity.ok(transactionService.depositInvest(userId, request));
     }
 
     @PostMapping("/withdraw")
     public ResponseEntity<TransactionResponse> withdraw(
-            @RequestParam Long userId,
+            @RequestParam UUID userId,
             @Valid @RequestBody WithdrawRequest request) {
         return ResponseEntity.ok(transactionService.withdrawInvest(userId, request));
     }
 
     @PostMapping("/transfer")
     public ResponseEntity<TransactionResponse> transfer(
-            @RequestParam Long userId,
+            @RequestParam UUID userId,
             @Valid @RequestBody TransferRequest request) {
         return ResponseEntity.ok(transactionService.transferInvest(userId, request));
     }
 
     @GetMapping("/history/{accountId}")
     public ResponseEntity<List<TransactionResponse>> getTransactionHistory(
-            @RequestParam Long userId,
+            @RequestParam UUID userId,
             @PathVariable Integer accountId) {
         return ResponseEntity.ok(transactionService.getInvestTransactionHistory(userId, accountId));
     }
 
     @GetMapping("/balance/{accountId}")
     public ResponseEntity<BigDecimal> getBalance(
-            @RequestParam Long userId,
+            @RequestParam UUID userId,
             @PathVariable Integer accountId) {
         return ResponseEntity.ok(transactionService.getInvestBalance(userId, accountId));
     }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/accounts/borrow/transaction")
@@ -21,35 +22,35 @@ public class BorrowTransactionController {
 
     @PostMapping("/deposit")
     public ResponseEntity<TransactionResponse> deposit(
-            @RequestParam Long userId,
+            @RequestParam UUID userId,
             @Valid @RequestBody DepositRequest request) {
         return ResponseEntity.ok(transactionService.depositBorrow(userId, request));
     }
 
     @PostMapping("/withdraw")
     public ResponseEntity<TransactionResponse> withdraw(
-            @RequestParam Long userId,
+            @RequestParam UUID userId,
             @Valid @RequestBody WithdrawRequest request) {
         return ResponseEntity.ok(transactionService.withdrawBorrow(userId, request));
     }
 
     @PostMapping("/transfer")
     public ResponseEntity<TransactionResponse> transfer(
-            @RequestParam Long userId,
+            @RequestParam UUID userId,
             @Valid @RequestBody TransferRequest request) {
         return ResponseEntity.ok(transactionService.transferBorrow(userId, request));
     }
 
     @GetMapping("/history/{accountId}")
     public ResponseEntity<List<TransactionResponse>> getTransactionHistory(
-            @RequestParam Long userId,
+            @RequestParam UUID userId,
             @PathVariable Integer accountId) {
         return ResponseEntity.ok(transactionService.getBorrowTransactionHistory(userId, accountId));
     }
 
     @GetMapping("/balance/{accountId}")
     public ResponseEntity<BigDecimal> getBalance(
-            @RequestParam Long userId,
+            @RequestParam UUID userId,
             @PathVariable Integer accountId) {
         return ResponseEntity.ok(transactionService.getBorrowBalance(userId, accountId));
     }

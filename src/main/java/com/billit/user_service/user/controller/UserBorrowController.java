@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/users/borrow")
 @RequiredArgsConstructor
@@ -18,14 +20,14 @@ public class UserBorrowController {
     private final UserBorrowService userBorrowService;
 
     @GetMapping
-    public ResponseEntity<UserBorrowResponse> getUserInfo(@RequestParam Long userId) {
+    public ResponseEntity<UserBorrowResponse> getUserInfo(@RequestParam UUID userId) {
         return ResponseEntity.ok(userBorrowService.getUserInfo(userId));
     }
 
     // 비밀번호 검증 엔드포인트 추가
     @PostMapping("/verify-password")
     public ResponseEntity<PasswordVerificationResponse> verifyPassword(
-            @RequestParam Long userId,
+            @RequestParam UUID userId,
             @Valid @RequestBody PasswordVerificationRequest request) {
         return ResponseEntity.ok(userBorrowService.verifyPassword(userId, request));
     }
@@ -61,7 +63,7 @@ public class UserBorrowController {
     // 마이페이지 조회 - 검증 토큰 필요
     @GetMapping("/mypage")
     public ResponseEntity<MyPageResponse> getMyPage(
-            @RequestParam Long userId,
+            @RequestParam UUID userId,
             @RequestHeader(value = "Authorization") String verificationToken) {
         if (verificationToken != null && verificationToken.startsWith("Bearer ")) {
             return ResponseEntity.ok(userBorrowService.getMyPage(userId, verificationToken.substring(7)));
@@ -72,7 +74,7 @@ public class UserBorrowController {
     // 비밀번호 변경 - 검증 토큰 필요
     @PutMapping("/password")
     public ResponseEntity<Void> updatePassword(
-            @RequestParam Long userId,
+            @RequestParam UUID userId,
             @RequestHeader(value = "Authorization") String verificationToken,
             @Valid @RequestBody PasswordUpdateRequest request) {
         if (verificationToken != null && verificationToken.startsWith("Bearer ")) {
@@ -85,7 +87,7 @@ public class UserBorrowController {
     // 전화번호 변경 - 검증 토큰 필요
     @PutMapping("/phone")
     public ResponseEntity<Void> updatePhone(
-            @RequestParam Long userId,
+            @RequestParam UUID userId,
             @RequestHeader(value = "Authorization") String verificationToken,
             @Valid @RequestBody PhoneUpdateRequest request) {
         if (verificationToken != null && verificationToken.startsWith("Bearer ")) {

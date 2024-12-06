@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/accounts/transaction")
@@ -23,7 +24,7 @@ public class TransactionController {
     // 대출자 계좌 잔액 조회
     @GetMapping("/borrow/balance/{accountId}")
     public ResponseEntity<BigDecimal> getBorrowBalance(
-            @RequestParam Long userId,
+            @RequestParam UUID userId,
             @PathVariable Integer accountId) {
         return ResponseEntity.ok(transactionService.getBorrowBalance(userId, accountId));
     }
@@ -31,7 +32,7 @@ public class TransactionController {
     // 투자자 계좌 잔액 조회
     @GetMapping("/invest/balance/{accountId}")
     public ResponseEntity<BigDecimal> getInvestBalance(
-            @RequestParam Long userId,
+            @RequestParam UUID userId,
             @PathVariable Integer accountId) {
         return ResponseEntity.ok(transactionService.getInvestBalance(userId, accountId));
     }
@@ -39,7 +40,7 @@ public class TransactionController {
     // 대출자 계좌 입금
     @PostMapping("/borrow/deposit")
     public ResponseEntity<TransactionResponse> depositBorrow(
-            @RequestParam Long userId,
+            @RequestParam UUID userId,
             @Valid @RequestBody DepositRequest request) {
         return ResponseEntity.ok(transactionService.depositBorrow(userId, request));
     }
@@ -54,7 +55,7 @@ public class TransactionController {
     // 투자자 계좌 입금
     @PostMapping("/invest/deposit")
     public ResponseEntity<TransactionResponse> depositInvest(
-            @RequestParam Long userId,
+            @RequestParam UUID userId,
             @Valid @RequestBody DepositRequest request) {
         return ResponseEntity.ok(transactionService.depositInvest(userId, request));
     }
@@ -62,7 +63,7 @@ public class TransactionController {
     // 대출자 계좌 출금
     @PostMapping("/borrow/withdraw")
     public ResponseEntity<TransactionResponse> withdrawBorrow(
-            @RequestParam Long userId,
+            @RequestParam UUID userId,
             @Valid @RequestBody WithdrawRequest request) {
         return ResponseEntity.ok(transactionService.withdrawBorrow(userId, request));
     }
@@ -70,7 +71,7 @@ public class TransactionController {
     // 투자자 계좌 출금
     @PostMapping("/invest/withdraw")
     public ResponseEntity<TransactionResponse> withdrawInvest(
-            @RequestParam Long userId,
+            @RequestParam UUID userId,
             @Valid @RequestBody WithdrawRequest request) {
         return ResponseEntity.ok(transactionService.withdrawInvest(userId, request));
     }
@@ -78,7 +79,7 @@ public class TransactionController {
     // 대출자 계좌 송금
     @PostMapping("/borrow/transfer")
     public ResponseEntity<TransactionResponse> transferBorrow(
-            @RequestParam Long userId,
+            @RequestParam UUID userId,
             @Valid @RequestBody TransferRequest request) {
         return ResponseEntity.ok(transactionService.transferBorrow(userId, request));
     }
@@ -86,7 +87,7 @@ public class TransactionController {
     // 투자자 계좌 송금
     @PostMapping("/invest/transfer")
     public ResponseEntity<TransactionResponse> transferInvest(
-            @RequestParam Long userId,
+            @RequestParam UUID userId,
             @Valid @RequestBody TransferRequest request) {
         return ResponseEntity.ok(transactionService.transferInvest(userId, request));
     }
@@ -94,7 +95,7 @@ public class TransactionController {
     // 대출자 계좌 거래 내역 조회
     @GetMapping("/borrow/history/{accountId}")
     public ResponseEntity<List<TransactionResponse>> getBorrowTransactionHistory(
-            @RequestParam Long userId,
+            @RequestParam UUID userId,
             @PathVariable Integer accountId) {
         return ResponseEntity.ok(transactionService.getBorrowTransactionHistory(userId, accountId));
     }
@@ -102,7 +103,7 @@ public class TransactionController {
     // 투자자 계좌 거래 내역 조회
     @GetMapping("/invest/history/{accountId}")
     public ResponseEntity<List<TransactionResponse>> getInvestTransactionHistory(
-            @RequestParam Long userId,
+            @RequestParam UUID userId,
             @PathVariable Integer accountId) {
         return ResponseEntity.ok(transactionService.getInvestTransactionHistory(userId, accountId));
     }

@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -94,7 +95,7 @@ public class UserInvestService {
     }
 
     // 비밀번호 검증
-    public PasswordVerificationResponse verifyPassword(Long userId, PasswordVerificationRequest request) {
+    public PasswordVerificationResponse verifyPassword(UUID userId, PasswordVerificationRequest request) {
         UserInvest user = userInvestRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
@@ -118,7 +119,7 @@ public class UserInvestService {
 
 
     // 마이페이지 조회
-    public MyPageResponse getMyPage(Long userId, String verificationToken) {
+    public MyPageResponse getMyPage(UUID userId, String verificationToken) {
         validateVerificationToken(verificationToken);
         UserInvest user = userInvestRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
@@ -128,7 +129,7 @@ public class UserInvestService {
 
     // 비밀번호 변경 - 암호화된 비밀번호 비교
     @Transactional
-    public void updatePassword(Long userId, PasswordUpdateRequest request, String verificationToken) {
+    public void updatePassword(UUID userId, PasswordUpdateRequest request, String verificationToken) {
         validateVerificationToken(verificationToken);
         UserInvest user = userInvestRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
@@ -146,7 +147,7 @@ public class UserInvestService {
 
 
     // 사용자 정보 조회
-    public UserInvestResponse getUserInfo(Long userId) {
+    public UserInvestResponse getUserInfo(UUID userId) {
         UserInvest user = userInvestRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
@@ -170,7 +171,7 @@ public class UserInvestService {
 
     // 전화번호 변경
     @Transactional
-    public void updatePhone(Long userId, PhoneUpdateRequest request, String verificationToken) {
+    public void updatePhone(UUID userId, PhoneUpdateRequest request, String verificationToken) {
         validateVerificationToken(verificationToken);
         UserInvest user = userInvestRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));

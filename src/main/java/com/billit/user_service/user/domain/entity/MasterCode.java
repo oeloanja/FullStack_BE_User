@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class MasterCode {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column(nullable = false, length = 4, unique = true)
     private String code;

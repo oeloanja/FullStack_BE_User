@@ -36,7 +36,7 @@ public class TransactionService {
     private final InvestAccountRepository investAccountRepository;
 
     // 대출자 계좌 잔액 조회
-    public BigDecimal getBorrowBalance(Long userId, Integer accountId) {
+    public BigDecimal getBorrowBalance(UUID userId, Integer accountId) {
         BorrowAccount account = borrowAccountRepository
                 .findByIdAndIsDeletedFalse(accountId)
                 .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
@@ -45,7 +45,7 @@ public class TransactionService {
     }
 
     // 투자자 계좌 잔액 조회
-    public BigDecimal getInvestBalance(Long userId, Integer accountId) {
+    public BigDecimal getInvestBalance(UUID userId, Integer accountId) {
         InvestAccount account = investAccountRepository
                 .findByIdAndIsDeletedFalse(accountId)
                 .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
@@ -55,7 +55,7 @@ public class TransactionService {
 
     // 대출자 계좌 입금
     @Transactional
-    public TransactionResponse depositBorrow(Long userId, DepositRequest request) {
+    public TransactionResponse depositBorrow(UUID userId, DepositRequest request) {
         BorrowAccount account = borrowAccountRepository
                 .findByIdAndIsDeletedFalse(request.getAccountId())
                 .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
@@ -93,7 +93,7 @@ public class TransactionService {
         return requests.stream()
                 .map(request -> {
                     // 1. 각 대출자의 계좌 조회
-                    BorrowAccount account = borrowAccountRepository.findById(Long.valueOf(request.getAccountBorrowId()))
+                    BorrowAccount account = borrowAccountRepository.findById(Integer.valueOf(request.getAccountBorrowId()))
                             .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
 
                     // 2. 잔액 업데이트
@@ -120,7 +120,7 @@ public class TransactionService {
 
     // 투자자 계좌 입금
     @Transactional
-    public TransactionResponse depositInvest(Long userId, DepositRequest request) {
+    public TransactionResponse depositInvest(UUID userId, DepositRequest request) {
         InvestAccount account = investAccountRepository
                 .findByIdAndIsDeletedFalse(request.getAccountId())
                 .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
@@ -146,12 +146,12 @@ public class TransactionService {
     }
 
     // 대출자 계좌 출금
-    @Transactional
-    public TransactionResponse withdrawBorrow(Long userId, WithdrawRequest request) {
-        BorrowAccount account = borrowAccountRepository
-                .findByIdAndIsDeletedFalse(request.getAccountId())
-                .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
-        validateBorrowAccountOwnership(account, userId);
+        @Transactional
+        public TransactionResponse withdrawBorrow(UUID userId, WithdrawRequest request) {
+            BorrowAccount account = borrowAccountRepository
+                    .findByIdAndIsDeletedFalse(request.getAccountId())
+                    .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
+            validateBorrowAccountOwnership(account, userId);
 
         Transaction transaction = Transaction.builder()
                 .transactionId(generateTransactionId())
@@ -174,7 +174,7 @@ public class TransactionService {
 
     // 투자자 계좌 출금
     @Transactional
-    public TransactionResponse withdrawInvest(Long userId, WithdrawRequest request) {
+    public TransactionResponse withdrawInvest(UUID userId, WithdrawRequest request) {
         InvestAccount account = investAccountRepository
                 .findByIdAndIsDeletedFalse(request.getAccountId())
                 .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
@@ -201,7 +201,7 @@ public class TransactionService {
 
     // 대출자 계좌 송금
     @Transactional
-    public TransactionResponse transferBorrow(Long userId, TransferRequest request) {
+    public TransactionResponse transferBorrow(UUID userId, TransferRequest request) {
         BorrowAccount fromAccount = borrowAccountRepository
                 .findByAccountNumberAndIsDeletedFalse(request.getFromAccountNumber())
                 .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
@@ -263,7 +263,7 @@ public class TransactionService {
 
     // 투자자 계좌 송금
     @Transactional
-    public TransactionResponse transferInvest(Long userId, TransferRequest request) {
+    public TransactionResponse transferInvest(UUID userId, TransferRequest request) {
         InvestAccount fromAccount = investAccountRepository
                 .findByAccountNumberAndIsDeletedFalse(request.getFromAccountNumber())
                 .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
@@ -324,7 +324,7 @@ public class TransactionService {
     }
 
     // 대출자 계좌 거래 내역 조회
-    public List<TransactionResponse> getBorrowTransactionHistory(Long userId, Integer accountId) {
+    public List<TransactionResponse> getBorrowTransactionHistory(UUID userId, Integer accountId) {
         BorrowAccount account = borrowAccountRepository
                 .findByIdAndIsDeletedFalse(accountId)
                 .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
@@ -337,7 +337,7 @@ public class TransactionService {
     }
 
     // 투자자 계좌 거래 내역 조회
-    public List<TransactionResponse> getInvestTransactionHistory(Long userId, Integer accountId) {
+    public List<TransactionResponse> getInvestTransactionHistory(UUID userId, Integer accountId) {
         InvestAccount account = investAccountRepository
                 .findByIdAndIsDeletedFalse(accountId)
                 .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
@@ -353,13 +353,13 @@ public class TransactionService {
         return UUID.randomUUID().toString();
     }
 
-    private void validateBorrowAccountOwnership(BorrowAccount account, Long userId) {
+    private void validateBorrowAccountOwnership(BorrowAccount account, UUID userId) {
         if (!account.getUserBorrow().getId().equals(userId)) {
             throw new CustomException(ErrorCode.ACCOUNT_USER_MISMATCH);
         }
     }
 
-    private void validateInvestAccountOwnership(InvestAccount account, Long userId) {
+    private void validateInvestAccountOwnership(InvestAccount account, UUID userId) {
         if (!account.getUserInvest().getId().equals(userId)) {
             throw new CustomException(ErrorCode.ACCOUNT_USER_MISMATCH);
         }

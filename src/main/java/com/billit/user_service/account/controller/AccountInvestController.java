@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/accounts/invest")
@@ -21,7 +22,7 @@ public class AccountInvestController {
     // 계좌 등록
     @PostMapping
     public ResponseEntity<AccountInvestResponse> createAccount(
-            @RequestParam Long userId,
+            @RequestParam UUID userId,
             @Valid @RequestBody AccountInvestRequest request) {
         return ResponseEntity.ok(accountInvestService.createAccount(userId, request));
     }
@@ -29,14 +30,14 @@ public class AccountInvestController {
     // 계좌 목록 조회
     @GetMapping
     public ResponseEntity<List<AccountInvestResponse>> getAccounts(
-            @RequestParam Long userId) {
+            @RequestParam UUID userId) {
         return ResponseEntity.ok(accountInvestService.getAccounts(userId));
     }
 
     // 계좌 삭제
     @PutMapping("/{accountId}/status")
     public ResponseEntity<Void> updateAccountStatus(
-            @RequestParam Long userId,
+            @RequestParam UUID userId,
             @PathVariable Integer accountId,
             @RequestBody AccountStatusRequest request) {    // request 매개변수 추가
         accountInvestService.deleteAccount(userId, accountId);

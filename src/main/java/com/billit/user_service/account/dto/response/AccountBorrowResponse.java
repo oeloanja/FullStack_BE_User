@@ -6,11 +6,12 @@ import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Getter
 @Builder
 public class AccountBorrowResponse {
-    private Long id;
+    private Integer id;
     private String bankName;
     private String accountNumber;
     private String accountHolder;
