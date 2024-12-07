@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.AccessLevel;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -17,7 +18,8 @@ import java.util.UUID;
 public class UserBorrow extends BaseTimeEntity {
 
     @Id
-    @Column(name = "user_borrow_id", columnDefinition = "VARCHAR(36)")
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(columnDefinition = "BINARY(16)")
     private UUID id = UUID.randomUUID();
 
     @Column(nullable = false, unique = true)

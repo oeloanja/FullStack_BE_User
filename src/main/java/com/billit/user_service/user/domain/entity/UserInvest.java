@@ -16,7 +16,8 @@ import java.util.UUID;
 public class UserInvest extends BaseTimeEntity {
 
     @Id
-    @Column(name = "user_investor_id", columnDefinition = "VARCHAR(36)")
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(columnDefinition = "BINARY(16)")
     private UUID id = UUID.randomUUID();
 
     @Column(nullable = false, unique = true)

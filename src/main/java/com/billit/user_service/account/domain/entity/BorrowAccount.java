@@ -34,7 +34,7 @@ public class BorrowAccount extends BaseTimeEntity {
     private String accountHolder;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_borrow_id", columnDefinition = "VARCHAR(36)")
+    @JoinColumn(name = "user_borrow_id", columnDefinition = "BINARY(16)")
     private UserBorrow userBorrow;
 
     @Column(nullable = false)
