@@ -52,8 +52,8 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=1234
       - MYSQL_DATABASE=user_service
-    volumes:
-      - mysql-user-data:/var/lib/mysql
+    #    volumes:
+    #      - mysql-user-data:/var/lib/mysql
     networks:
       - msa-network
     healthcheck:
@@ -128,11 +128,6 @@ services:
       - "6379:6379"
     networks:
       - msa-network
-    healthcheck:
-      test: [ "CMD", "redis-cli", "ping" ]
-      interval: 10s
-      timeout: 5s
-      retries: 3
 
 
   gateway-service:
@@ -148,7 +143,17 @@ services:
       - msa-network
     depends_on:
       eureka-service:
-        condition: service_healthy
+        condition: service_started
+      loan-service:
+        condition: service_started
+      loan-group-service:
+        condition: service_started
+      user-service:
+        condition: service_started
+      invest-service:
+        condition: service_started
+      repayment-service:
+        condition: service_started
 
   eureka-service:
     platform: linux/amd64
@@ -158,11 +163,11 @@ services:
       - "8761:8761"
     networks:
       - msa-network
-    healthcheck:
-      test: ["CMD", "wget", "--spider", "http://localhost:8761/actuator/health"]
-      interval: 10s
-      timeout: 20s
-      retries: 3
+  #    healthcheck:
+  #      test: ["CMD", "wget", "--spider", "http://localhost:8761/actuator/health"]
+  #      interval: 30s
+  #      timeout: 10s
+  #      retries: 5
 
   loan-service:
     container_name: loan-service
@@ -188,7 +193,7 @@ services:
       mysql-loan:
         condition: service_healthy
       eureka-service:
-        condition: service_healthy
+        condition: service_started
 
   user-service:
     container_name: user-service
@@ -214,7 +219,7 @@ services:
       mysql-user:
         condition: service_healthy
       eureka-service:
-        condition: service_healthy
+        condition: service_started
       redis:
         condition: service_started
 
@@ -242,9 +247,10 @@ services:
       mysql-loan-group:
         condition: service_healthy
       eureka-service:
-        condition: service_healthy
+        condition: service_started
       redis:
         condition: service_started
+
   invest-service:
     container_name: invest-service
     platform: linux/amd64
@@ -269,7 +275,7 @@ services:
       postgres-invest:
         condition: service_healthy
       eureka-service:
-        condition: service_healthy
+        condition: service_started
 
   repayment-service:
     container_name: repayment-service
@@ -295,10 +301,10 @@ services:
       postgres-repayment:
         condition: service_healthy
       eureka-service:
-        condition: service_healthy
+        condition: service_started
 
-volumes:
-  mysql-user-data:
+#volumes:
+#  mysql-user-data:
 
 networks:
   msa-network:
