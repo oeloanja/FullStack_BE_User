@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -321,5 +322,12 @@ public class UserBorrowService {
                 "이메일 인증이 완료되었습니다.",
                 null
         );
+    }
+
+    public void updateUserCredit(CreditUpdateRequest request){
+        UserBorrow user = userBorrowRepository.findByPhone(request.getPhoneNumber())
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        user.updateCreditRating(request.getTarget());
+        userBorrowRepository.save(user);
     }
 }
