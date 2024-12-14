@@ -324,6 +324,7 @@ public class UserBorrowService {
         );
     }
 
+    @Transactional
     public void updateUserCredit(CreditUpdateRequest request){
         UserBorrow user = userBorrowRepository.findByPhone(request.getPhoneNumber())
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
