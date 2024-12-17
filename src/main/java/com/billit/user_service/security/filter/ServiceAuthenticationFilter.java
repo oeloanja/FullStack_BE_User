@@ -31,7 +31,10 @@ public class ServiceAuthenticationFilter extends OncePerRequestFilter {
         log.info("Request URI: {}", request.getRequestURI());
         log.info("Service Name Header: {}", serviceName);
 
-        if ("loan-group-service".equals(serviceName)||"investment-service".equals(serviceName)||"repayment-service".equals(serviceName)) {
+        if ("loan-group-service".equals(serviceName)||
+                "investment-service".equals(serviceName)||
+                "repayment-service".equals(serviceName)||
+                "credit-proxy-service".equals(serviceName)) {
             SecurityContextHolder.getContext()
                     .setAuthentication(new UsernamePasswordAuthenticationToken(null, null, null));
         }

@@ -117,4 +117,11 @@ public class UserBorrowController {
             @Valid @RequestBody FindPasswordRequest request) {
         return ResponseEntity.ok(userBorrowService.findPassword(request));
     }
+
+    @PutMapping("/credit")
+    public ResponseEntity<Void> updateCredit(
+            @RequestBody CreditUpdateRequest request){
+        userBorrowService.updateUserCredit(request);
+        return ResponseEntity.ok().build();
+    }
 }

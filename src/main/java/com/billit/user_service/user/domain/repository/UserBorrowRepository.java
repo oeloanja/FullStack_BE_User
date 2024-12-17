@@ -10,4 +10,5 @@ import java.util.UUID;
 public interface UserBorrowRepository extends JpaRepository<UserBorrow, UUID> {
     Optional<UserBorrow> findByEmail(String email);
     boolean existsByEmail(String email);
+    Optional<UserBorrow> findByPhone(String phone);
 }
