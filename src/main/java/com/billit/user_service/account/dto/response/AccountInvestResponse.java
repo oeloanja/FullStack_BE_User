@@ -25,6 +25,7 @@ public class AccountInvestResponse {
                 .bankName(account.getBankName())
                 .accountNumber(account.getAccountNumber())
                 .accountHolder(account.getAccountHolder())
+                .balance(account.getBalance())
                 .createdAt(account.getCreatedAt())
                 .updatedAt(account.getUpdatedAt())
                 .build();
